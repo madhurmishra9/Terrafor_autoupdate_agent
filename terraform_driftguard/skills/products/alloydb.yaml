@@ -1,0 +1,14 @@
+name: AlloyDB
+enabled: true
+aliases:
+  - AlloyDB
+  - google_alloydb
+resources:
+  - google_alloydb_cluster
+  - google_alloydb_instance
+module_paths:
+  - modules/alloydb
+policy_allowed: true
+relevance_topics:
+  - AlloyDB cluster
+  - AlloyDB CMEK

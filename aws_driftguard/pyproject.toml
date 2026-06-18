@@ -1,0 +1,26 @@
+[project]
+name = "aws-driftguard"
+version = "1.0.0"
+description = "ADK sequential pipeline for GCP AWS DriftGuard of Terraform modules"
+requires-python = ">=3.11"
+readme = "README.md"
+dependencies = [
+    "google-adk>=0.2.0",
+    "google-genai>=0.3.0",
+    "google-cloud-aiplatform>=1.60.0",
+    "jira>=3.8.0",
+    "PyJWT[crypto]>=2.8.0",
+    "requests>=2.31.0",
+    "psycopg2-binary>=2.9.9",
+    "python-dotenv>=1.0.0",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

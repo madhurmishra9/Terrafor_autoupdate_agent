@@ -1,0 +1,15 @@
+name: Amazon EKS
+enabled: true
+aliases:
+  - Amazon EKS
+  - EKS
+  - aws_eks_cluster
+resources:
+  - aws_eks_cluster
+  - aws_eks_node_group
+module_paths:
+  - modules/eks
+policy_allowed: true
+relevance_topics:
+  - EKS managed node group
+  - EKS access entries

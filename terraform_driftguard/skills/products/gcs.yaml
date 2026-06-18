@@ -1,0 +1,16 @@
+name: Cloud Storage
+enabled: true
+aliases:
+  - Cloud Storage
+  - GCS
+  - google_storage
+resources:
+  - google_storage_bucket
+  - google_storage_bucket_iam_member
+module_paths:
+  - modules/gcs
+policy_allowed: true
+relevance_topics:
+  - Cloud Storage bucket
+  - GCS soft delete
+  - GCS autoclass

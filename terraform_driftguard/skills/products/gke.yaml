@@ -1,0 +1,15 @@
+name: GKE
+enabled: true
+aliases:
+  - GKE
+  - Kubernetes Engine
+  - google_container
+resources:
+  - google_container_cluster
+  - google_container_node_pool
+module_paths:
+  - modules/gke
+policy_allowed: true
+relevance_topics:
+  - GKE node pool
+  - GKE autopilot

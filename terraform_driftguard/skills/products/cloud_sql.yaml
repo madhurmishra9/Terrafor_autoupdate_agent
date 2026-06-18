@@ -1,0 +1,17 @@
+name: Cloud SQL
+enabled: true
+aliases:
+  - Cloud SQL
+  - CloudSQL
+  - google_sql
+resources:
+  - google_sql_database_instance
+  - google_sql_database
+  - google_sql_user
+module_paths:
+  - modules/cloudsql
+policy_allowed: true
+relevance_topics:
+  - Cloud SQL Postgres
+  - Cloud SQL data cache
+  - Cloud SQL maintenance window

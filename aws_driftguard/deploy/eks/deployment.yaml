@@ -1,0 +1,68 @@
+# EKS deployment for AWS DriftGuard (converse orchestration mode).
+# Uses IRSA (IAM Roles for Service Accounts) for Bedrock + RDS + Secrets Manager.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: aws-driftguard
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: aws-driftguard
+  namespace: aws-driftguard
+  annotations:
+    # IRSA: bind to an IAM role with bedrock:InvokeModel, secretsmanager:GetSecretValue,
+    # and RDS connect permissions.
+    eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/aws-driftguard-irsa
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: aws-driftguard
+  namespace: aws-driftguard
+spec:
+  # Daily at 02:00 UTC.
+  schedule: "0 2 * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          serviceAccountName: aws-driftguard
+          restartPolicy: Never
+          containers:
+            - name: aws-driftguard
+              image: ACCOUNT_ID.dkr.ecr.REGION.amazonaws.com/aws-driftguard:1.0.0
+              env:
+                - name: AWS_REGION
+                  value: us-east-1
+                - name: ORCHESTRATION_MODE
+                  value: converse
+                - name: BEDROCK_MODEL
+                  value: anthropic.claude-sonnet-4-6-20260514-v1:0
+                - name: BEDROCK_MODEL_FAST
+                  value: anthropic.claude-haiku-4-5-20251001-v1:0
+                - name: RDS_HOST
+                  value: aws-driftguard.xxxx.us-east-1.rds.amazonaws.com
+                - name: RDS_DATABASE
+                  value: aws_driftguard
+                - name: RDS_USER
+                  value: driftguard
+                - name: RDS_PASSWORD_SECRET_ID
+                  value: aws-driftguard/rds
+                - name: JIRA_API_TOKEN_SECRET_ID
+                  value: aws-driftguard/jira
+                - name: GITHUB_PAT_SECRET_ID
+                  value: aws-driftguard/github
+                - name: GITHUB_API_BASE
+                  value: https://api.github.com
+                - name: JIRA_API_VERSION
+                  value: "3"
+              resources:
+                requests:
+                  cpu: "500m"
+                  memory: "1Gi"
+                limits:
+                  cpu: "1"
+                  memory: "2Gi"

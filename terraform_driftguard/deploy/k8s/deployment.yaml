@@ -1,0 +1,125 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: terraform-driftguard
+  namespace: terraform-driftguard
+  labels:
+    app: terraform-driftguard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: terraform-driftguard
+  template:
+    metadata:
+      labels:
+        app: terraform-driftguard
+    spec:
+      serviceAccountName: terraform-driftguard-ksa   # bound to GSA via Workload Identity
+      containers:
+        # ── Main container ──────────────────────────────────────────────────
+        - name: terraform-driftguard
+          image: REGION-docker.pkg.dev/PROJECT/terraform-driftguard/terraform-driftguard:1.0.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: GOOGLE_CLOUD_PROJECT
+              valueFrom: { configMapKeyRef: { name: terraform-driftguard-config, key: GOOGLE_CLOUD_PROJECT } }
+            - name: VERTEX_LOCATION
+              valueFrom: { configMapKeyRef: { name: terraform-driftguard-config, key: VERTEX_LOCATION } }
+            - name: VERTEX_MODEL
+              valueFrom: { configMapKeyRef: { name: terraform-driftguard-config, key: VERTEX_MODEL } }
+            - name: CLOUDSQL_HOST
+              value: "127.0.0.1"
+            - name: CLOUDSQL_PORT
+              value: "5432"
+            - name: CLOUDSQL_DATABASE
+              valueFrom: { configMapKeyRef: { name: terraform-driftguard-config, key: CLOUDSQL_DATABASE } }
+            - name: CLOUDSQL_USER
+              valueFrom: { secretKeyRef: { name: terraform-driftguard-secrets, key: CLOUDSQL_USER } }
+            - name: CLOUDSQL_PASSWORD
+              valueFrom: { secretKeyRef: { name: terraform-driftguard-secrets, key: CLOUDSQL_PASSWORD } }
+            - name: JIRA_BASE_URL
+              valueFrom: { configMapKeyRef: { name: terraform-driftguard-config, key: JIRA_BASE_URL } }
+            - name: JIRA_EMAIL
+              valueFrom: { configMapKeyRef: { name: terraform-driftguard-config, key: JIRA_EMAIL } }
+            - name: JIRA_API_TOKEN
+              valueFrom: { secretKeyRef: { name: terraform-driftguard-secrets, key: JIRA_API_TOKEN } }
+            - name: JIRA_PROJECT_KEY
+              valueFrom: { configMapKeyRef: { name: terraform-driftguard-config, key: JIRA_PROJECT_KEY } }
+            - name: JIRA_API_VERSION
+              value: "3"
+            - name: GITHUB_API_BASE
+              valueFrom: { configMapKeyRef: { name: terraform-driftguard-config, key: GITHUB_API_BASE } }
+            - name: GITHUB_REPO_OWNER
+              valueFrom: { configMapKeyRef: { name: terraform-driftguard-config, key: GITHUB_REPO_OWNER } }
+            - name: GITHUB_REPO_NAME
+              valueFrom: { configMapKeyRef: { name: terraform-driftguard-config, key: GITHUB_REPO_NAME } }
+            - name: GITHUB_AUTH_MODE
+              valueFrom: { configMapKeyRef: { name: terraform-driftguard-config, key: GITHUB_AUTH_MODE } }
+            - name: GITHUB_PAT
+              valueFrom: { secretKeyRef: { name: terraform-driftguard-secrets, key: GITHUB_PAT, optional: true } }
+            - name: GITHUB_APP_ID
+              valueFrom: { configMapKeyRef: { name: terraform-driftguard-config, key: GITHUB_APP_ID, optional: true } }
+            - name: GITHUB_APP_INSTALLATION_ID
+              valueFrom: { configMapKeyRef: { name: terraform-driftguard-config, key: GITHUB_APP_INSTALLATION_ID, optional: true } }
+            - name: GITHUB_APP_PRIVATE_KEY_PATH
+              value: "/var/secrets/github-app/private-key.pem"
+            - name: MCP_SERVER_URL
+              value: "http://localhost:8080"
+            - name: SKILLS_ROOT
+              value: "/app/skills"
+            - name: CAPTURE_ENABLED
+              value: "false"
+          volumeMounts:
+            - name: skills
+              mountPath: /app/skills
+            - name: github-app-key
+              mountPath: /var/secrets/github-app
+              readOnly: true
+          resources:
+            requests: { cpu: "500m", memory: "1Gi" }
+            limits: { cpu: "2", memory: "4Gi" }
+          startupProbe:
+            exec:
+              command: ["python", "-c", "import socket;socket.create_connection(('127.0.0.1',5432),5)"]
+            failureThreshold: 30
+            periodSeconds: 5
+
+        # ── Sidecar: Cloud SQL Auth Proxy ───────────────────────────────────
+        - name: cloud-sql-proxy
+          image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.11.0
+          args:
+            - "--structured-logs"
+            - "--port=5432"
+            - "$(CLOUDSQL_INSTANCE_CONNECTION_NAME)"
+          env:
+            - name: CLOUDSQL_INSTANCE_CONNECTION_NAME
+              valueFrom: { configMapKeyRef: { name: terraform-driftguard-config, key: CLOUDSQL_INSTANCE_CONNECTION_NAME } }
+          securityContext:
+            runAsNonRoot: true
+          resources:
+            requests: { cpu: "100m", memory: "128Mi" }
+            limits: { cpu: "500m", memory: "256Mi" }
+
+        # ── Sidecar: MCP server (GitHub tools) ──────────────────────────────
+        - name: mcp-server
+          image: REGION-docker.pkg.dev/PROJECT/terraform-driftguard/mcp-github:1.0.0
+          ports:
+            - containerPort: 8080
+          env:
+            - name: GITHUB_API_BASE
+              valueFrom: { configMapKeyRef: { name: terraform-driftguard-config, key: GITHUB_API_BASE } }
+          resources:
+            requests: { cpu: "100m", memory: "128Mi" }
+            limits: { cpu: "500m", memory: "512Mi" }
+
+      volumes:
+        # Skills mounted from ConfigMap for hot updates without image rebuild.
+        # For immutable prod, remove this and bake skills/ into the image.
+        - name: skills
+          configMap:
+            name: terraform-driftguard-skills
+        - name: github-app-key
+          secret:
+            secretName: github-app-key
+            optional: true

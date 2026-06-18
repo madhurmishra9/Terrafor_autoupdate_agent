@@ -1,0 +1,15 @@
+name: Azure SQL Database
+enabled: true
+aliases:
+  - Azure SQL Database
+  - Azure SQL
+  - azurerm_mssql
+resources:
+  - azurerm_mssql_database
+  - azurerm_mssql_server
+module_paths:
+  - modules/azure_sql
+policy_allowed: true
+relevance_topics:
+  - Azure SQL elastic pool
+  - Azure SQL serverless

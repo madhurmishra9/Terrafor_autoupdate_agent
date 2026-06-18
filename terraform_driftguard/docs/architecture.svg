@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 1560" font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#5F6368"/>
+  </marker>
+  <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#1A73E8"/>
+  </marker>
+  <marker id="arrow-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#00897B"/>
+  </marker>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-opacity="0.10"/>
+  </filter>
+</defs>
+<rect width="1680" height="1560" fill="#FAFBFC"/>
+<text x="40" y="55" font-size="30" font-weight="700" fill="#202124">Terraform DriftGuard — Skills-Driven Architecture</text>
+<text x="40" y="88" font-size="15" fill="#5F6368">ADK SequentialAgent on Vertex AI (Gemini 2.5) · Each agent loads its versioned SKILL.md at runtime · Encoded operational knowledge lives in the repo, not in prompt strings</text>
+<rect x="40" y="130" width="1600" height="350" rx="14" fill="white" stroke="#1A73E8" stroke-width="2" filter="url(#shadow)"/>
+<rect x="40" y="130" width="1600" height="40" rx="14" fill="#E8F0FE"/>
+<rect x="40" y="156" width="1600" height="14" fill="#E8F0FE"/>
+<text x="62" y="157" font-size="16" font-weight="700" fill="#1A73E8">TerraformDriftGuardPipelineAgent (SequentialAgent) — minimal agent constructors, behavior in SKILL.md</text>
+<rect x="62" y="175" width="1556" height="34" rx="6" fill="#FEF7E0" stroke="#F9AB00" stroke-width="1.5"/>
+<text x="78" y="197" font-size="13" font-weight="600" fill="#202124">cb_before_pipeline</text>
+<text x="240" y="197" font-size="12" fill="#5F6368">→ clears 9 state keys (release_notes · classification_result · change_analyser_result · decision_maker_result · terraform_result · jira_result · pr_result · pipeline_mode · pipeline_halted)</text>
+<rect x="62" y="228" width="1556" height="5" rx="2.5" fill="#FCE8E6" stroke="#EA4335" stroke-width="0.5"/>
+<text x="62" y="225" font-size="11" font-weight="600" fill="#EA4335">pipeline_halted flag (centralised stop-guard channel)</text>
+<rect x="60" y="240" width="200" height="110" rx="10" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5" filter="url(#shadow)"/>
+<circle cx="82" cy="262" r="13" fill="#1A73E8"/>
+<text x="82" y="267" font-size="13" font-weight="700" fill="white" text-anchor="middle">1</text>
+<text x="104" y="268" font-size="15" font-weight="700" fill="#202124">RequestProcessor</text>
+<line x1="74" y1="290" x2="246" y2="290" stroke="#1A73E8" stroke-opacity="0.3"/>
+<text x="74" y="308" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">OUTPUT_KEY</text>
+<text x="74" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">release_notes</text>
+<text x="74" y="342" font-size="10" font-weight="600" fill="#00897B" letter-spacing="0.4">↓ LOADS SKILL</text>
+<line x1="261" y1="295.0" x2="273" y2="295.0" stroke="#1A73E8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+<rect x="274" y="240" width="200" height="110" rx="10" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5" filter="url(#shadow)"/>
+<circle cx="296" cy="262" r="13" fill="#1A73E8"/>
+<text x="296" y="267" font-size="13" font-weight="700" fill="white" text-anchor="middle">2</text>
+<text x="318" y="268" font-size="15" font-weight="700" fill="#202124">Classification</text>
+<line x1="288" y1="290" x2="460" y2="290" stroke="#1A73E8" stroke-opacity="0.3"/>
+<text x="288" y="308" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">OUTPUT_KEY</text>
+<text x="288" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">classification_result</text>
+<text x="288" y="342" font-size="10" font-weight="600" fill="#00897B" letter-spacing="0.4">↓ LOADS SKILL</text>
+<line x1="475" y1="295.0" x2="487" y2="295.0" stroke="#1A73E8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+<rect x="488" y="240" width="200" height="110" rx="10" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5" filter="url(#shadow)"/>
+<circle cx="510" cy="262" r="13" fill="#1A73E8"/>
+<text x="510" y="267" font-size="13" font-weight="700" fill="white" text-anchor="middle">3</text>
+<text x="532" y="268" font-size="15" font-weight="700" fill="#202124">ChangeAnalyser</text>
+<line x1="502" y1="290" x2="674" y2="290" stroke="#1A73E8" stroke-opacity="0.3"/>
+<text x="502" y="308" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">OUTPUT_KEY</text>
+<text x="502" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">change_analyser_result</text>
+<text x="502" y="342" font-size="10" font-weight="600" fill="#00897B" letter-spacing="0.4">↓ LOADS SKILL</text>
+<line x1="689" y1="295.0" x2="701" y2="295.0" stroke="#1A73E8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+<rect x="702" y="240" width="200" height="110" rx="10" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5" filter="url(#shadow)"/>
+<circle cx="724" cy="262" r="13" fill="#1A73E8"/>
+<text x="724" y="267" font-size="13" font-weight="700" fill="white" text-anchor="middle">4</text>
+<text x="746" y="268" font-size="15" font-weight="700" fill="#202124">DecisionMaker</text>
+<line x1="716" y1="290" x2="888" y2="290" stroke="#1A73E8" stroke-opacity="0.3"/>
+<text x="716" y="308" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">OUTPUT_KEY</text>
+<text x="716" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">decision_maker_result</text>
+<text x="716" y="342" font-size="10" font-weight="600" fill="#00897B" letter-spacing="0.4">↓ LOADS SKILL</text>
+<line x1="903" y1="295.0" x2="915" y2="295.0" stroke="#1A73E8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+<rect x="916" y="240" width="200" height="110" rx="10" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5" filter="url(#shadow)"/>
+<circle cx="938" cy="262" r="13" fill="#1A73E8"/>
+<text x="938" y="267" font-size="13" font-weight="700" fill="white" text-anchor="middle">5</text>
+<text x="960" y="268" font-size="15" font-weight="700" fill="#202124">Terraform</text>
+<line x1="930" y1="290" x2="1102" y2="290" stroke="#1A73E8" stroke-opacity="0.3"/>
+<text x="930" y="308" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">OUTPUT_KEY</text>
+<text x="930" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">terraform_result</text>
+<text x="930" y="342" font-size="10" font-weight="600" fill="#00897B" letter-spacing="0.4">↓ LOADS SKILL</text>
+<line x1="1117" y1="295.0" x2="1129" y2="295.0" stroke="#1A73E8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+<rect x="1130" y="240" width="200" height="110" rx="10" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5" filter="url(#shadow)"/>
+<circle cx="1152" cy="262" r="13" fill="#1A73E8"/>
+<text x="1152" y="267" font-size="13" font-weight="700" fill="white" text-anchor="middle">6</text>
+<text x="1174" y="268" font-size="15" font-weight="700" fill="#202124">Jira</text>
+<line x1="1144" y1="290" x2="1316" y2="290" stroke="#1A73E8" stroke-opacity="0.3"/>
+<text x="1144" y="308" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">OUTPUT_KEY</text>
+<text x="1144" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">jira_result</text>
+<text x="1144" y="342" font-size="10" font-weight="600" fill="#00897B" letter-spacing="0.4">↓ LOADS SKILL</text>
+<line x1="1331" y1="295.0" x2="1343" y2="295.0" stroke="#1A73E8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+<rect x="1344" y="240" width="200" height="110" rx="10" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5" filter="url(#shadow)"/>
+<circle cx="1366" cy="262" r="13" fill="#1A73E8"/>
+<text x="1366" y="267" font-size="13" font-weight="700" fill="white" text-anchor="middle">7</text>
+<text x="1388" y="268" font-size="15" font-weight="700" fill="#202124">PR</text>
+<line x1="1358" y1="290" x2="1530" y2="290" stroke="#1A73E8" stroke-opacity="0.3"/>
+<text x="1358" y="308" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">OUTPUT_KEY</text>
+<text x="1358" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">pr_result</text>
+<text x="1358" y="342" font-size="10" font-weight="600" fill="#00897B" letter-spacing="0.4">↓ LOADS SKILL</text>
+<rect x="62" y="390" width="1556" height="34" rx="6" fill="#FEF7E0" stroke="#F9AB00" stroke-width="1.5"/>
+<text x="78" y="412" font-size="13" font-weight="600" fill="#202124">cb_after_pipeline</text>
+<text x="240" y="412" font-size="12" fill="#5F6368">→ writes eval artifact to disk when CAPTURE_ENABLED=true</text>
+<text x="40" y="522" font-size="14" font-weight="700" fill="#00897B" letter-spacing="0.6">AGENT SKILLS LAYER — versioned in repo, loaded on demand</text>
+<line x1="160.0" y1="355" x2="160.0" y2="538" stroke="#00897B" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrow-teal)"/>
+<line x1="374.0" y1="355" x2="374.0" y2="538" stroke="#00897B" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrow-teal)"/>
+<line x1="588.0" y1="355" x2="588.0" y2="538" stroke="#00897B" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrow-teal)"/>
+<line x1="802.0" y1="355" x2="802.0" y2="538" stroke="#00897B" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrow-teal)"/>
+<line x1="1016.0" y1="355" x2="1016.0" y2="538" stroke="#00897B" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrow-teal)"/>
+<line x1="1230.0" y1="355" x2="1230.0" y2="538" stroke="#00897B" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrow-teal)"/>
+<line x1="1444.0" y1="355" x2="1444.0" y2="538" stroke="#00897B" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrow-teal)"/>
+<rect x="60" y="540" width="200" height="240" rx="8" fill="white" stroke="#00897B" stroke-width="1.5" filter="url(#shadow)"/>
+<rect x="60" y="540" width="200" height="32" rx="8" fill="#E0F2F1"/>
+<rect x="60" y="560" width="200" height="14" fill="#E0F2F1"/>
+<text x="72" y="561" font-size="12" font-weight="700" fill="#00897B" font-family="ui-monospace, SF Mono, Consolas, monospace">📁 skills/request_processor/</text>
+<text x="74" y="590" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#00897B" font-weight="600">├ SKILL.md</text>
+<text x="74" y="606" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124" font-weight="400">├ examples/</text>
+<text x="74" y="622" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  ga-note.xml</text>
+<text x="74" y="638" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  preview-note.xml</text>
+<text x="74" y="654" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124" font-weight="400">├ schemas/</text>
+<text x="74" y="670" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  output.json</text>
+<line x1="72" y1="732" x2="248" y2="732" stroke="#00897B" stroke-opacity="0.3"/>
+<text x="72" y="746" font-size="9" font-weight="600" fill="#5F6368" letter-spacing="0.4">SKILL.MD COVERS</text>
+<text x="72" y="760" font-size="10" fill="#202124">GA detection · XML normalisation</text>
+<text x="72" y="774" font-size="10" fill="#202124">FETCH_ONLY mode</text>
+<rect x="274" y="540" width="200" height="240" rx="8" fill="white" stroke="#00897B" stroke-width="1.5" filter="url(#shadow)"/>
+<rect x="274" y="540" width="200" height="32" rx="8" fill="#E0F2F1"/>
+<rect x="274" y="560" width="200" height="14" fill="#E0F2F1"/>
+<text x="286" y="561" font-size="12" font-weight="700" fill="#00897B" font-family="ui-monospace, SF Mono, Consolas, monospace">📁 skills/classification/</text>
+<text x="288" y="590" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#00897B" font-weight="600">├ SKILL.md</text>
+<text x="288" y="606" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124" font-weight="400">├ taxonomy.md</text>
+<text x="288" y="622" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124" font-weight="400">├ db/</text>
+<text x="288" y="638" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  schema.sql</text>
+<text x="288" y="654" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  upsert.sql</text>
+<line x1="286" y1="732" x2="462" y2="732" stroke="#00897B" stroke-opacity="0.3"/>
+<text x="286" y="746" font-size="9" font-weight="600" fill="#5F6368" letter-spacing="0.4">SKILL.MD COVERS</text>
+<text x="286" y="760" font-size="10" fill="#202124">feat/fix/chore taxonomy · DB schema</text>
+<text x="286" y="774" font-size="10" fill="#202124">dedup rules</text>
+<rect x="488" y="540" width="200" height="240" rx="8" fill="white" stroke="#00897B" stroke-width="1.5" filter="url(#shadow)"/>
+<rect x="488" y="540" width="200" height="32" rx="8" fill="#E0F2F1"/>
+<rect x="488" y="560" width="200" height="14" fill="#E0F2F1"/>
+<text x="500" y="561" font-size="12" font-weight="700" fill="#00897B" font-family="ui-monospace, SF Mono, Consolas, monospace">📁 skills/change_analyser/</text>
+<text x="502" y="590" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#00897B" font-weight="600">├ SKILL.md</text>
+<text x="502" y="606" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124" font-weight="400">├ patterns/</text>
+<text x="502" y="622" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  new-argument.md</text>
+<text x="502" y="638" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  deprecation.md</text>
+<text x="502" y="654" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  new-resource.md</text>
+<line x1="500" y1="732" x2="676" y2="732" stroke="#00897B" stroke-opacity="0.3"/>
+<text x="500" y="746" font-size="9" font-weight="600" fill="#5F6368" letter-spacing="0.4">SKILL.MD COVERS</text>
+<text x="500" y="760" font-size="10" fill="#202124">TF Registry lookup · org policy</text>
+<text x="500" y="774" font-size="10" fill="#202124">action_required</text>
+<rect x="702" y="540" width="200" height="240" rx="8" fill="white" stroke="#00897B" stroke-width="1.5" filter="url(#shadow)"/>
+<rect x="702" y="540" width="200" height="32" rx="8" fill="#E0F2F1"/>
+<rect x="702" y="560" width="200" height="14" fill="#E0F2F1"/>
+<text x="714" y="561" font-size="12" font-weight="700" fill="#00897B" font-family="ui-monospace, SF Mono, Consolas, monospace">📁 skills/decision_maker/</text>
+<text x="716" y="590" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#00897B" font-weight="600">├ SKILL.md</text>
+<text x="716" y="606" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124" font-weight="400">├ examples/</text>
+<text x="716" y="622" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  module-tree.md</text>
+<text x="716" y="638" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  artifact-save.md</text>
+<line x1="714" y1="732" x2="890" y2="732" stroke="#00897B" stroke-opacity="0.3"/>
+<text x="714" y="746" font-size="9" font-weight="600" fill="#5F6368" letter-spacing="0.4">SKILL.MD COVERS</text>
+<text x="714" y="760" font-size="10" fill="#202124">GitHub file traversal · artifact strategy</text>
+<text x="714" y="774" font-size="10" fill="#202124">files_to_patch</text>
+<rect x="916" y="540" width="200" height="240" rx="8" fill="white" stroke="#00897B" stroke-width="1.5" filter="url(#shadow)"/>
+<rect x="916" y="540" width="200" height="32" rx="8" fill="#E0F2F1"/>
+<rect x="916" y="560" width="200" height="14" fill="#E0F2F1"/>
+<text x="928" y="561" font-size="12" font-weight="700" fill="#00897B" font-family="ui-monospace, SF Mono, Consolas, monospace">📁 skills/terraform/</text>
+<text x="930" y="590" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#00897B" font-weight="600">├ SKILL.md</text>
+<text x="930" y="606" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124" font-weight="400">├ examples/</text>
+<text x="930" y="622" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  feat-add.tf</text>
+<text x="930" y="638" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  fix-deprecated.tf</text>
+<text x="930" y="654" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124" font-weight="400">├ scripts/</text>
+<text x="930" y="670" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  validate.sh</text>
+<line x1="928" y1="732" x2="1104" y2="732" stroke="#00897B" stroke-opacity="0.3"/>
+<text x="928" y="746" font-size="9" font-weight="600" fill="#5F6368" letter-spacing="0.4">SKILL.MD COVERS</text>
+<text x="928" y="760" font-size="10" fill="#202124">HCL syntactic + semantic rules</text>
+<text x="928" y="774" font-size="10" fill="#202124">schema-grounded · validate→plan loop · judge</text>
+<rect x="1130" y="540" width="200" height="240" rx="8" fill="white" stroke="#00897B" stroke-width="1.5" filter="url(#shadow)"/>
+<rect x="1130" y="540" width="200" height="32" rx="8" fill="#E0F2F1"/>
+<rect x="1130" y="560" width="200" height="14" fill="#E0F2F1"/>
+<text x="1142" y="561" font-size="12" font-weight="700" fill="#00897B" font-family="ui-monospace, SF Mono, Consolas, monospace">📁 skills/jira/</text>
+<text x="1144" y="590" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#00897B" font-weight="600">├ SKILL.md</text>
+<text x="1144" y="606" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124" font-weight="400">├ templates/</text>
+<text x="1144" y="622" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  feat-ticket.md</text>
+<text x="1144" y="638" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  fix-ticket.md</text>
+<text x="1144" y="654" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  chore-ticket.md</text>
+<text x="1144" y="670" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124" font-weight="400">├ scripts/</text>
+<text x="1144" y="686" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  acli-wrap.sh</text>
+<line x1="1142" y1="732" x2="1318" y2="732" stroke="#00897B" stroke-opacity="0.3"/>
+<text x="1142" y="746" font-size="9" font-weight="600" fill="#5F6368" letter-spacing="0.4">SKILL.MD COVERS</text>
+<text x="1142" y="760" font-size="10" fill="#202124">3-tier connectivity · ticket templates</text>
+<text x="1142" y="774" font-size="10" fill="#202124">linkback flow</text>
+<rect x="1344" y="540" width="200" height="240" rx="8" fill="white" stroke="#00897B" stroke-width="1.5" filter="url(#shadow)"/>
+<rect x="1344" y="540" width="200" height="32" rx="8" fill="#E0F2F1"/>
+<rect x="1344" y="560" width="200" height="14" fill="#E0F2F1"/>
+<text x="1356" y="561" font-size="12" font-weight="700" fill="#00897B" font-family="ui-monospace, SF Mono, Consolas, monospace">📁 skills/pr/</text>
+<text x="1358" y="590" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#00897B" font-weight="600">├ SKILL.md</text>
+<text x="1358" y="606" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124" font-weight="400">├ templates/</text>
+<text x="1358" y="622" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  pr-body.md</text>
+<text x="1358" y="638" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  jira-linkback.md</text>
+<text x="1358" y="654" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  existing-pr.md</text>
+<line x1="1356" y1="732" x2="1532" y2="732" stroke="#00897B" stroke-opacity="0.3"/>
+<text x="1356" y="746" font-size="9" font-weight="600" fill="#5F6368" letter-spacing="0.4">SKILL.MD COVERS</text>
+<text x="1356" y="760" font-size="10" fill="#202124">PR prefix mapping · branch naming</text>
+<text x="1356" y="774" font-size="10" fill="#202124">existing-PR comments</text>
+<rect x="40" y="810" width="1600" height="60" rx="8" fill="#E0F2F1" stroke="#00897B" stroke-width="1.5"/>
+<text x="60" y="832" font-size="13" font-weight="700" fill="#00897B" letter-spacing="0.4">RUNTIME LOAD SEQUENCE (per agent)</text>
+<text x="60" y="854" font-size="12" fill="#202124"><tspan font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#1A73E8">1.</tspan> cb_before_pipeline clears state   <tspan font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#1A73E8">2.</tspan> stop_guard / connectivity_guard runs   <tspan font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#1A73E8">3.</tspan> agent reads <tspan font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#00897B">SKILL.md</tspan> + relevant sub-files   <tspan font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#1A73E8">4.</tspan> LLM call with skill as system context   <tspan font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#1A73E8">5.</tspan> tool calls   <tspan font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#1A73E8">6.</tspan> writes output_key to session.state</text>
+<text x="40" y="918" font-size="14" font-weight="700" fill="#5F6368" letter-spacing="0.6">EXTERNAL DEPENDENCIES</text>
+<rect x="40" y="930" width="250" height="85" rx="8" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5"/>
+<text x="54" y="952" font-size="14" font-weight="700" fill="#202124">Vertex AI</text>
+<text x="54" y="972" font-size="12" fill="#5F6368">Gemini 2.5</text>
+<text x="54" y="1000" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">USED BY</text>
+<text x="122" y="1000" font-size="11" fill="#202124">All 7 agents</text>
+<rect x="308" y="930" width="250" height="85" rx="8" fill="#E6F4EA" stroke="#34A853" stroke-width="1.5"/>
+<text x="322" y="952" font-size="14" font-weight="700" fill="#202124">GCP Release Notes</text>
+<text x="322" y="972" font-size="12" fill="#5F6368">RSS / XML feed</text>
+<text x="322" y="1000" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">USED BY</text>
+<text x="390" y="1000" font-size="11" fill="#202124">RequestProcessorAgent</text>
+<rect x="576" y="930" width="250" height="85" rx="8" fill="#E6F4EA" stroke="#34A853" stroke-width="1.5"/>
+<text x="590" y="952" font-size="14" font-weight="700" fill="#202124">CloudSQL</text>
+<text x="590" y="972" font-size="12" fill="#5F6368">Postgres (via proxy)</text>
+<text x="590" y="1000" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">USED BY</text>
+<text x="658" y="1000" font-size="11" fill="#202124">ClassificationAgent</text>
+<rect x="844" y="930" width="250" height="85" rx="8" fill="#E6F4EA" stroke="#34A853" stroke-width="1.5"/>
+<text x="858" y="952" font-size="14" font-weight="700" fill="#202124">Terraform Registry</text>
+<text x="858" y="972" font-size="12" fill="#5F6368">Provider schemas</text>
+<text x="858" y="1000" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">USED BY</text>
+<text x="926" y="1000" font-size="11" fill="#202124">ChangeAnalyser, Terraform</text>
+<rect x="1112" y="930" width="250" height="85" rx="8" fill="#E6F4EA" stroke="#34A853" stroke-width="1.5"/>
+<text x="1126" y="952" font-size="14" font-weight="700" fill="#202124">GitHub</text>
+<text x="1126" y="972" font-size="12" fill="#5F6368">Modules + PRs (via MCP)</text>
+<text x="1126" y="1000" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">USED BY</text>
+<text x="1194" y="1000" font-size="11" fill="#202124">DecisionMaker, PRAgent</text>
+<rect x="1380" y="930" width="250" height="85" rx="8" fill="#F3E8FD" stroke="#8430CE" stroke-width="1.5"/>
+<text x="1394" y="952" font-size="14" font-weight="700" fill="#202124">Jira</text>
+<text x="1394" y="972" font-size="12" fill="#5F6368">3-tier: lib → acli → API</text>
+<text x="1394" y="1000" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">USED BY</text>
+<text x="1462" y="1000" font-size="11" fill="#202124">JiraAgent, PRAgent</text>
+<text x="40" y="1060" font-size="14" font-weight="700" fill="#5F6368" letter-spacing="0.6">KUBERNETES DEPLOYMENT TOPOLOGY</text>
+<rect x="40" y="1078" width="1600" height="215" rx="14" fill="white" stroke="#EA4335" stroke-width="2" stroke-dasharray="6,4"/>
+<rect x="40" y="1078" width="120" height="32" rx="14" fill="#FCE8E6"/>
+<text x="56" y="1100" font-size="14" font-weight="700" fill="#EA4335">Pod</text>
+<text x="100" y="1100" font-size="12" fill="#5F6368">terraform-driftguard</text>
+<rect x="60" y="1138" width="360" height="110" rx="10" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="76" y="1162" font-size="14" font-weight="700" fill="#202124">terraform-driftguard</text>
+<text x="404" y="1162" font-size="11" font-weight="600" fill="#1A73E8" text-anchor="end" letter-spacing="0.5">MAIN</text>
+<text x="76" y="1188" font-size="11" fill="#5F6368">• ADK SequentialAgent runtime</text>
+<text x="76" y="1205" font-size="11" fill="#5F6368">• Vertex AI client → Gemini 2.5</text>
+<text x="76" y="1222" font-size="11" fill="#5F6368">• Mounts skills/ from repo (ConfigMap or image)</text>
+<text x="76" y="1239" font-size="11" fill="#5F6368">• Env: GOOGLE_CLOUD_PROJECT, JIRA_*</text>
+<rect x="444" y="1138" width="360" height="110" rx="10" fill="#F1F3F4" stroke="#80868B" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="460" y="1162" font-size="14" font-weight="700" fill="#202124">cloud-sql-proxy</text>
+<text x="788" y="1162" font-size="11" font-weight="600" fill="#80868B" text-anchor="end" letter-spacing="0.5">SIDECAR</text>
+<text x="460" y="1188" font-size="11" fill="#5F6368">• Cloud SQL Auth Proxy v2</text>
+<text x="460" y="1205" font-size="11" fill="#5F6368">• Listens on 127.0.0.1:5432</text>
+<text x="460" y="1222" font-size="11" fill="#5F6368">• Unix socket via emptyDir</text>
+<text x="460" y="1239" font-size="11" fill="#5F6368">• Restart: Always</text>
+<rect x="828" y="1138" width="360" height="110" rx="10" fill="#F1F3F4" stroke="#80868B" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="844" y="1162" font-size="14" font-weight="700" fill="#202124">mcp-server</text>
+<text x="1172" y="1162" font-size="11" font-weight="600" fill="#80868B" text-anchor="end" letter-spacing="0.5">SIDECAR</text>
+<text x="844" y="1188" font-size="11" fill="#5F6368">• MCP endpoint for GitHub tools</text>
+<text x="844" y="1205" font-size="11" fill="#5F6368">• Listens on localhost:8080</text>
+<text x="844" y="1222" font-size="11" fill="#5F6368">• Used by DecisionMaker, PRAgent</text>
+<text x="844" y="1239" font-size="11" fill="#5F6368">• Restart: Always</text>
+<rect x="1212" y="1138" width="360" height="110" rx="10" fill="#F3E8FD" stroke="#8430CE" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="1228" y="1162" font-size="14" font-weight="700" fill="#202124">jira-connectivity</text>
+<text x="1556" y="1162" font-size="11" font-weight="600" fill="#8430CE" text-anchor="end" letter-spacing="0.5">IN-PROCESS</text>
+<text x="1228" y="1188" font-size="11" fill="#5F6368">• Tier 1: jira python library</text>
+<text x="1228" y="1205" font-size="11" fill="#5F6368">• Tier 2: acli (subprocess)</text>
+<text x="1228" y="1222" font-size="11" fill="#5F6368">• Tier 3: REST API (requests)</text>
+<text x="1228" y="1239" font-size="11" fill="#5F6368">• Shared timeout: JIRA_TIMEOUT_SECONDS</text>
+<text x="60" y="1266" font-size="11" font-weight="700" fill="#5F6368" letter-spacing="0.4">SKILLS DELIVERY</text>
+<text x="240" y="1266" font-size="11" fill="#202124">skills/ baked into container image at build time   ·   alt: mounted via ConfigMap for hot updates without redeploy   ·   versioned in same repo as agent code</text>
+<text x="40" y="1328" font-size="12" font-weight="700" fill="#5F6368" letter-spacing="0.5">LEGEND</text>
+<rect x="110" y="1316" width="16" height="16" rx="3" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5"/>
+<text x="132" y="1328" font-size="11" fill="#202124">Agent / Compute</text>
+<rect x="270" y="1316" width="16" height="16" rx="3" fill="#E0F2F1" stroke="#00897B" stroke-width="1.5"/>
+<text x="292" y="1328" font-size="11" fill="#202124">Skill folder</text>
+<rect x="409" y="1316" width="16" height="16" rx="3" fill="#FEF7E0" stroke="#F9AB00" stroke-width="1.5"/>
+<text x="431" y="1328" font-size="11" fill="#202124">Session state / Callback</text>
+<rect x="632" y="1316" width="16" height="16" rx="3" fill="#E6F4EA" stroke="#34A853" stroke-width="1.5"/>
+<text x="654" y="1328" font-size="11" fill="#202124">External dependency</text>
+<rect x="820" y="1316" width="16" height="16" rx="3" fill="#F3E8FD" stroke="#8430CE" stroke-width="1.5"/>
+<text x="842" y="1328" font-size="11" fill="#202124">Jira (multi-tier)</text>
+<rect x="994" y="1316" width="16" height="16" rx="3" fill="#F1F3F4" stroke="#80868B" stroke-width="1.5"/>
+<text x="1016" y="1328" font-size="11" fill="#202124">Sidecar container</text>
+<rect x="1168" y="1316" width="16" height="16" rx="3" fill="#FCE8E6" stroke="#EA4335" stroke-width="1.5"/>
+<text x="1190" y="1328" font-size="11" fill="#202124">Pod boundary / halt</text>
+</svg>

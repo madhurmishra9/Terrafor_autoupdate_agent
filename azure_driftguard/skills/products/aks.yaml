@@ -1,0 +1,15 @@
+name: Azure Kubernetes Service
+enabled: true
+aliases:
+  - Azure Kubernetes Service
+  - AKS
+  - azurerm_kubernetes
+resources:
+  - azurerm_kubernetes_cluster
+  - azurerm_kubernetes_cluster_node_pool
+module_paths:
+  - modules/aks
+policy_allowed: true
+relevance_topics:
+  - AKS node pool
+  - AKS workload identity

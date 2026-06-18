@@ -1,0 +1,16 @@
+name: Cloud Spanner
+enabled: true
+aliases:
+  - Cloud Spanner
+  - Spanner
+  - google_spanner
+resources:
+  - google_spanner_instance
+  - google_spanner_database
+module_paths:
+  - modules/spanner
+# Example of a product that exists but needs manual review before auto-patching:
+policy_allowed: false
+relevance_topics:
+  - Spanner instance
+  - Spanner dialect

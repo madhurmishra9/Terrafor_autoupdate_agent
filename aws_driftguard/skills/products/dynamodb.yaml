@@ -1,0 +1,15 @@
+name: Amazon DynamoDB
+enabled: true
+aliases:
+  - Amazon DynamoDB
+  - DynamoDB
+  - aws_dynamodb_table
+resources:
+  - aws_dynamodb_table
+module_paths:
+  - modules/dynamodb
+# Tracked but review-only example.
+policy_allowed: false
+relevance_topics:
+  - DynamoDB global table
+  - DynamoDB on-demand

@@ -1,0 +1,139 @@
+# Azure DriftGuard Agent
+
+A **native Azure** agent pipeline (Azure OpenAI + Azure AI Agent Service) that
+keeps Terraform modules current with Azure releases (Azure Updates). It fetches GA release notes, classifies and stores them,
+analyses Terraform-provider impact, fetches affected module files, generates
+correct HCL patches, raises (or comments on) a Jira ticket, and opens a PR
+linked back to that ticket.
+
+This is the **skills-driven** build: every agent's behaviour lives in a
+versioned `SKILL.md`, loaded per-invocation, not hardcoded into Python.
+
+## Sibling editions (same architecture, different cloud)
+
+DriftGuard ships as three cross-linked repositories that share an identical
+7-agent pipeline, guard model, Jira/GitHub clients, and accuracy/optimisation
+features. Each edition runs **natively on its own cloud** — the LLM, datastore,
+secrets, compute, and orchestration framework differ per cloud, as does the
+release-notes source, Terraform provider, and product allow-list.
+
+| Cloud | Repo | Runtime | Release source | Provider |
+|-------|------|---------|----------------|----------|
+| GCP | [`terraform_driftguard`](../terraform_driftguard/README.md) | Vertex AI + CloudSQL + GKE (ADK) | GCP release notes (Atom) | `hashicorp/google` |
+| AWS | [`aws_driftguard`](../aws_driftguard/README.md) | Bedrock + RDS + ECS/EKS | AWS What's New (RSS) | `hashicorp/aws` |
+| **Azure** (this repo) | `azure_driftguard` | Azure OpenAI + Azure SQL + AKS | Azure Updates (RSS) | `hashicorp/azurerm` |
+
+> Sibling links assume the three repos are checked out side by side. On GitHub, replace the relative paths with the org/repo URLs.
+
+
+## Pipeline
+
+```
+RequestProcessor → Classification → ChangeAnalyser → DecisionMaker
+   → Terraform → Jira → PR
+```
+
+See `docs/ARCHITECTURE.md` for the full contract and `docs/architecture.svg`
+for the diagram.
+
+## Key features
+
+- **Skills-driven agents** — behaviour in `skills/<agent>/SKILL.md`, hot-reloadable.
+- **Jira 3-tier connectivity** — `jira` library → `acli` → REST API v3, in strict
+  priority order, with the working tier recorded for downstream reuse.
+- **ADF everywhere** — all Jira rich text is Atlassian Document Format for
+  Jira Cloud `api/v3`.
+- **GitHub PAT or App auth** — works against `api.github.com` or Enterprise
+  `api/v3`; App mode mints short-lived installation tokens.
+- **Centralised stop-guard** — a single `pipeline_halted` flag short-circuits all
+  downstream agents.
+- **Azure-native runtime** — Azure OpenAI for inference, Azure SQL for storage,
+  Key Vault for credentials, AKS for compute.
+- **Native Azure orchestration** — runnable Azure OpenAI tool-use orchestrator,
+  plus the managed Azure AI Agent Service (one agent per stage).
+- **Accuracy features** — provider schema grounding, self-correcting
+  validate→plan loop, version-pinning gate, and a judge/critic pass before any
+  PR. See `docs/FEATURES.md`.
+- **Optimisation features** — tiered model routing (fast model for parsing,
+  pro for reasoning), embedding-based relevance filtering, and a TTL cache for
+  schema/registry lookups.
+
+## Quick start (local)
+
+```bash
+python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+cp .env.example .env       # fill in values
+python tests/test_core.py  # run unit tests (no external services needed)
+python -m azure_driftguard.run
+```
+
+## Deploy (AKS)
+
+```bash
+make build push
+make deploy        # applies config, skills ConfigMap, Deployment, CronJob
+make logs
+```
+
+After editing any `SKILL.md`, hot-update without a rebuild:
+
+```bash
+make skills-configmap     # remounts updated skills (~90s propagation)
+```
+
+## Configuration
+
+All configuration is environment-driven. See `.env.example` for the full list,
+including Azure OpenAI (`AZURE_OPENAI_*`), Azure SQL (`AZURE_SQL_*`), Jira, and GitHub. Secrets resolve from Key Vault.
+
+## Onboarding products (no code changes)
+
+The products DriftGuard tracks are defined declaratively in
+`skills/products/*.yaml`. Each manifest describes one product: how to match its
+release notes, which Terraform resources and module paths it owns, whether org
+policy auto-allows it, and extra relevance phrases. The ingest, change-analysis,
+and relevance stages all read these manifests through
+`common/product_registry.py`, so one file keeps every stage consistent.
+
+To onboard a product, drop in a manifest — no Python changes:
+
+```yaml
+# skills/products/myproduct.yaml
+name: My Product
+aliases: [My Product, azurerm_myproduct]
+resources: [azurerm_myproduct_resource]
+module_paths: [modules/myproduct]
+policy_allowed: true        # false => track + flag for review, don't auto-patch
+relevance_topics: [my product feature]
+```
+
+With `SKILLS_SOURCE=github` (see `docs/SKILLS_SOURCE.md`) the manifest is read
+from the repo at runtime — commit it and it is live on the next run, no redeploy.
+The referenced Terraform module must already exist in your module repo —
+DriftGuard updates existing modules, it doesn't scaffold new ones. See
+`skills/products/README.md` for the full schema. Example: `skills/products/azure_sql.yaml`.
+
+## Project layout
+
+```
+src/azure_driftguard/
+  common/        config, logging, state, ADF, Azure OpenAI/SQL/KeyVault, Jira/GitHub
+  agents/        tools, guards, callbacks, the 7 agent definitions
+  skills_loader/ per-invocation SKILL.md loader (hot reload)
+  orchestration/ stages, tool registry, Azure orchestrator, agent service runtime
+  run.py         entrypoint
+skills/<agent>/  SKILL.md + README.md (+ examples/ for terraform)
+deploy/k8s/      Deployment, sidecars, config, secrets, CronJob
+docs/            ARCHITECTURE.md, IMPLEMENTATION_PLAN.md, architecture.svg
+tests/           unit tests (run without the Azure SDKs / cloud)
+```
+
+## Documentation
+
+- `docs/ARCHITECTURE.md` — pipeline contract, state keys, guards, per-agent detail.
+- `docs/ORCHESTRATION.md` — native orchestration modes (runnable + managed).
+- `docs/FEATURES.md` — accuracy + optimisation features and how to toggle them.
+- `docs/SKILLS_SOURCE.md` — serve skills from the repo at runtime (no redeploy).
+- `docs/IMPLEMENTATION_PLAN.md` — phased rollout, milestones, runbook.
+- `skills/<agent>/README.md` — per-agent why/what/when/where.

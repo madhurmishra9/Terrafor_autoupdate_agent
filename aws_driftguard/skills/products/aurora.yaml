@@ -1,0 +1,15 @@
+name: Amazon Aurora
+enabled: true
+aliases:
+  - Amazon Aurora
+  - Aurora
+  - aws_rds_cluster
+resources:
+  - aws_rds_cluster
+  - aws_rds_cluster_instance
+module_paths:
+  - modules/aurora
+policy_allowed: true
+relevance_topics:
+  - Aurora Serverless v2
+  - Aurora global database

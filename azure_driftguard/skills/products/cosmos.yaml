@@ -1,0 +1,15 @@
+name: Azure Cosmos DB
+enabled: true
+aliases:
+  - Azure Cosmos DB
+  - Cosmos DB
+  - azurerm_cosmosdb
+resources:
+  - azurerm_cosmosdb_account
+module_paths:
+  - modules/cosmos
+# Tracked but review-only example.
+policy_allowed: false
+relevance_topics:
+  - Cosmos DB autoscale
+  - Cosmos DB serverless

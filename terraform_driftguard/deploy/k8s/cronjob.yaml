@@ -1,0 +1,41 @@
+# Scheduled execution of the Terraform DriftGuard pipeline (e.g. daily).
+# Reuses the same image and config as the Deployment.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: terraform-driftguard-cron
+  namespace: terraform-driftguard
+spec:
+  schedule: "0 6 * * *"        # 06:00 UTC daily
+  concurrencyPolicy: Forbid    # never overlap pipeline runs
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          serviceAccountName: terraform-driftguard-ksa
+          restartPolicy: Never
+          containers:
+            - name: terraform-driftguard
+              image: REGION-docker.pkg.dev/PROJECT/terraform-driftguard/terraform-driftguard:1.0.0
+              command: ["python", "-m", "terraform_driftguard.run"]
+              envFrom:
+                - configMapRef: { name: terraform-driftguard-config }
+                - secretRef: { name: terraform-driftguard-secrets }
+              env:
+                - name: CLOUDSQL_HOST
+                  value: "127.0.0.1"
+              volumeMounts:
+                - name: skills
+                  mountPath: /app/skills
+            - name: cloud-sql-proxy
+              image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.11.0
+              args: ["--port=5432", "$(CLOUDSQL_INSTANCE_CONNECTION_NAME)"]
+              env:
+                - name: CLOUDSQL_INSTANCE_CONNECTION_NAME
+                  valueFrom: { configMapKeyRef: { name: terraform-driftguard-config, key: CLOUDSQL_INSTANCE_CONNECTION_NAME } }
+          volumes:
+            - name: skills
+              configMap: { name: terraform-driftguard-skills }

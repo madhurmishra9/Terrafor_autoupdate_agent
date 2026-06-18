@@ -1,0 +1,17 @@
+name: Amazon RDS
+enabled: true
+aliases:
+  - Amazon RDS
+  - RDS
+  - aws_db_instance
+resources:
+  - aws_db_instance
+  - aws_db_parameter_group
+  - aws_db_subnet_group
+module_paths:
+  - modules/rds
+policy_allowed: true
+relevance_topics:
+  - RDS Postgres
+  - RDS storage autoscaling
+  - RDS blue green deployment

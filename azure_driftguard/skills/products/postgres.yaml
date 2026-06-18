@@ -1,0 +1,15 @@
+name: Azure Database for PostgreSQL
+enabled: true
+aliases:
+  - Azure Database for PostgreSQL
+  - Azure PostgreSQL
+  - azurerm_postgresql
+resources:
+  - azurerm_postgresql_flexible_server
+  - azurerm_postgresql_flexible_server_database
+module_paths:
+  - modules/postgres
+policy_allowed: true
+relevance_topics:
+  - PostgreSQL Flexible Server
+  - PostgreSQL high availability

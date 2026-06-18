@@ -1,0 +1,15 @@
+name: Azure Blob Storage
+enabled: true
+aliases:
+  - Azure Blob Storage
+  - Blob Storage
+  - azurerm_storage
+resources:
+  - azurerm_storage_account
+  - azurerm_storage_container
+module_paths:
+  - modules/storage
+policy_allowed: true
+relevance_topics:
+  - Blob lifecycle management
+  - Storage account SFTP

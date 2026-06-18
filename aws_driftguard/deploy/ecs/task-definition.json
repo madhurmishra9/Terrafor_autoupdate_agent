@@ -1,0 +1,40 @@
+{
+  "family": "aws-driftguard",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "1024",
+  "memory": "2048",
+  "executionRoleArn": "arn:aws:iam::ACCOUNT_ID:role/aws-driftguard-execution",
+  "taskRoleArn": "arn:aws:iam::ACCOUNT_ID:role/aws-driftguard-task",
+  "containerDefinitions": [
+    {
+      "name": "aws-driftguard",
+      "image": "ACCOUNT_ID.dkr.ecr.REGION.amazonaws.com/aws-driftguard:1.0.0",
+      "essential": true,
+      "environment": [
+        {"name": "AWS_REGION", "value": "us-east-1"},
+        {"name": "ORCHESTRATION_MODE", "value": "converse"},
+        {"name": "BEDROCK_MODEL", "value": "anthropic.claude-sonnet-4-6-20260514-v1:0"},
+        {"name": "BEDROCK_MODEL_FAST", "value": "anthropic.claude-haiku-4-5-20251001-v1:0"},
+        {"name": "RDS_HOST", "value": "aws-driftguard.xxxx.us-east-1.rds.amazonaws.com"},
+        {"name": "RDS_DATABASE", "value": "aws_driftguard"},
+        {"name": "RDS_USER", "value": "driftguard"},
+        {"name": "GITHUB_API_BASE", "value": "https://api.github.com"},
+        {"name": "JIRA_API_VERSION", "value": "3"}
+      ],
+      "secrets": [
+        {"name": "RDS_PASSWORD_SECRET_ID", "valueFrom": "arn:aws:secretsmanager:REGION:ACCOUNT_ID:secret:aws-driftguard/rds"},
+        {"name": "JIRA_API_TOKEN_SECRET_ID", "valueFrom": "arn:aws:secretsmanager:REGION:ACCOUNT_ID:secret:aws-driftguard/jira"},
+        {"name": "GITHUB_PAT_SECRET_ID", "valueFrom": "arn:aws:secretsmanager:REGION:ACCOUNT_ID:secret:aws-driftguard/github"}
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/aws-driftguard",
+          "awslogs-region": "REGION",
+          "awslogs-stream-prefix": "driftguard"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+# Core ADK + Vertex
+google-adk>=0.2.0
+google-genai>=0.3.0
+google-cloud-aiplatform>=1.60.0
+
+# External integrations
+jira>=3.8.0
+PyJWT[crypto]>=2.8.0
+requests>=2.31.0
+PyYAML>=6.0
+packaging>=23.0
+psycopg2-binary>=2.9.9
+
+# Runtime
+python-dotenv>=1.0.0

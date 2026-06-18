@@ -1,0 +1,76 @@
+# AKS deployment for Azure DriftGuard (sdk orchestration mode).
+# Uses AKS Workload Identity for Azure OpenAI + Azure SQL + Key Vault access.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: azure-driftguard
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: azure-driftguard
+  namespace: azure-driftguard
+  annotations:
+    # Workload Identity: bind to a user-assigned managed identity with
+    # Cognitive Services OpenAI User, Key Vault Secrets User, and SQL access.
+    azure.workload.identity/client-id: "MANAGED_IDENTITY_CLIENT_ID"
+  labels:
+    azure.workload.identity/use: "true"
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: azure-driftguard
+  namespace: azure-driftguard
+spec:
+  schedule: "0 2 * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        metadata:
+          labels:
+            azure.workload.identity/use: "true"
+        spec:
+          serviceAccountName: azure-driftguard
+          restartPolicy: Never
+          containers:
+            - name: azure-driftguard
+              image: ACR_NAME.azurecr.io/azure-driftguard:1.0.0
+              env:
+                - name: ORCHESTRATION_MODE
+                  value: sdk
+                - name: AZURE_OPENAI_ENDPOINT
+                  value: https://YOUR-AOAI.openai.azure.com/
+                - name: AZURE_OPENAI_DEPLOYMENT
+                  value: gpt-4o
+                - name: AZURE_OPENAI_DEPLOYMENT_FAST
+                  value: gpt-4o-mini
+                - name: AZURE_OPENAI_API_KEY_SECRET
+                  value: aoai-api-key
+                - name: AZURE_KEYVAULT_URL
+                  value: https://YOUR-KV.vault.azure.net/
+                - name: AZURE_SQL_SERVER
+                  value: your-sql.database.windows.net
+                - name: AZURE_SQL_DATABASE
+                  value: azure_driftguard
+                - name: AZURE_SQL_USER
+                  value: driftguard
+                - name: AZURE_SQL_PASSWORD_SECRET
+                  value: sql-password
+                - name: JIRA_API_TOKEN_SECRET
+                  value: jira-token
+                - name: GITHUB_PAT_SECRET
+                  value: github-pat
+                - name: GITHUB_API_BASE
+                  value: https://api.github.com
+                - name: JIRA_API_VERSION
+                  value: "3"
+              resources:
+                requests:
+                  cpu: "500m"
+                  memory: "1Gi"
+                limits:
+                  cpu: "1"
+                  memory: "2Gi"
