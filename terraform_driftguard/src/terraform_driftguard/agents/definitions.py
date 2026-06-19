@@ -54,6 +54,7 @@ def build_agents() -> list[Any]:
         output_key=RELEASE_NOTES,
         instruction=skill_instruction_provider("skills/request_processor/SKILL.md"),
         tools=[
+            tools_ingest.list_feeds,
             tools_ingest.fetch_gcp_release_notes,
             tools_ingest.parse_xml_entry,
             tools_ingest.list_gcp_products,
@@ -84,6 +85,9 @@ def build_agents() -> list[Any]:
         tools=[
             tools_analysis.search_terraform_support,
             tools_analysis.check_org_policy_support,
+            tools_analysis.list_product_resources,
+            tools_analysis.resolve_attribute_owner,
+            tools_analysis.list_family_schema,
             tools_analysis.fetch_webpage,
         ],
     )
@@ -114,6 +118,8 @@ def build_agents() -> list[Any]:
             tools_terraform.list_artifact_files,
             tools_terraform.load_artifacts,
             tools_terraform.save_artifacts_from_content,
+            tools_terraform.check_patch_scope,
+            tools_terraform.strip_patch_scope,
             # Provider schema grounding
             tools_terraform.get_provider_schema,
             tools_terraform.extract_resource_schema,

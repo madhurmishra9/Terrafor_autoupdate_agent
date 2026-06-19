@@ -29,13 +29,31 @@ def get_current_timestamp() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-def fetch_aws_release_notes(max_items: int = 50) -> dict[str, Any]:
+def list_feeds() -> dict[str, Any]:
+    """Return the feeds to fetch this run, and when the run was triggered.
+
+    Tells RequestProcessor WHICH feeds to pull: the shared cloud feed
+    (RELEASE_FEED_URL) plus any per-product feed_url declared in
+    skills/products/*.yaml. The pipeline run is triggered on a schedule
+    (EventBridge/ECS, EKS/AKS CronJob), so "when" is the trigger time returned
+    here as triggered_at.
+    """
+    from ..common.product_registry import registry
+
+    cfg = get_config()
+    feeds = registry.feeds(shared_feed_url=cfg.pipeline.release_feed_url)
+    return {"feeds": feeds, "count": len(feeds),
+            "triggered_at": get_current_timestamp()}
+
+
+def fetch_aws_release_notes(max_items: int = 50, feed_url: str = "") -> dict[str, Any]:
     """Fetch the AWS 'What's New' RSS feed and return raw entries.
 
     Returns {"entries": [{title, summary, updated, link}], "count": N}.
     """
     cfg = get_config()
-    resp = requests.get(cfg.pipeline.release_feed_url, timeout=30,
+    url = feed_url or cfg.pipeline.release_feed_url
+    resp = requests.get(url, timeout=30,
                         headers={"User-Agent": "aws-driftguard"})
     resp.raise_for_status()
     root = ET.fromstring(resp.content)

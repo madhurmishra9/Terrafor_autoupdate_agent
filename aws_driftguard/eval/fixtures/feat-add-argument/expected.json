@@ -1,0 +1,10 @@
+{
+  "expectation": "patch",
+  "candidate_correct": true,
+  "provider": "aws",
+  "resource": "aws_db_instance",
+  "required_version": "5.80.0",
+  "current_constraint": ">= 5.0, < 6.0",
+  "must_contain": ["storage_throughput"],
+  "must_not_contain": ["storage_throughputt", "made_up_arg"]
+}

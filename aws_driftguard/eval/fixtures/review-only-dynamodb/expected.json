@@ -1,0 +1,10 @@
+{
+  "expectation": "review",
+  "candidate_correct": false,
+  "provider": "aws",
+  "resource": "aws_dynamodb_table",
+  "required_version": "5.75.0",
+  "current_constraint": ">= 5.0",
+  "must_contain": ["table_class"],
+  "must_not_contain": []
+}

@@ -22,13 +22,33 @@ def get_current_timestamp() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-def fetch_gcp_release_notes(max_items: int = 50) -> dict[str, Any]:
-    """Fetch the GCP release-notes feed and return raw entries.
+def list_feeds() -> dict[str, Any]:
+    """Return the feeds to fetch this run, and when the run was triggered.
 
+    Tells RequestProcessor WHICH feeds to pull: the shared cloud feed
+    (RELEASE_FEED_URL) plus any per-product feed_url declared in
+    skills/products/*.yaml. The pipeline run itself is triggered on a schedule
+    (k8s CronJob / ECS scheduled task), so "when" is the trigger time returned
+    here as triggered_at.
+    """
+    from ..common.product_registry import registry
+
+    cfg = get_config()
+    feeds = registry.feeds(shared_feed_url=cfg.pipeline.release_feed_url)
+    return {"feeds": feeds, "count": len(feeds),
+            "triggered_at": get_current_timestamp()}
+
+
+def fetch_gcp_release_notes(max_items: int = 50, feed_url: str = "") -> dict[str, Any]:
+    """Fetch a release-notes feed and return raw entries.
+
+    feed_url is optional: when empty the shared RELEASE_FEED_URL is used; pass a
+    specific feed (from list_feeds) to fetch a per-product feed instead.
     Returns a dict: {"entries": [{title, summary, updated, link}], "count": N}.
     """
     cfg = get_config()
-    resp = requests.get(cfg.pipeline.release_feed_url, timeout=30)
+    url = feed_url or cfg.pipeline.release_feed_url
+    resp = requests.get(url, timeout=30)
     resp.raise_for_status()
     root = ET.fromstring(resp.content)
     ns = {"atom": "http://www.w3.org/2005/Atom"}

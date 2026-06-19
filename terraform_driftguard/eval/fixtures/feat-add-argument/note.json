@@ -1,0 +1,9 @@
+{
+  "product": "Cloud SQL",
+  "version": "6.1.0",
+  "release_date": "2026-01-15",
+  "title": "Cloud SQL adds data_cache_config for Enterprise Plus edition",
+  "description": "A new data_cache_config block enables the data cache on Enterprise Plus instances.",
+  "url": "https://cloud.google.com/sql/docs/release-notes",
+  "is_ga": true
+}

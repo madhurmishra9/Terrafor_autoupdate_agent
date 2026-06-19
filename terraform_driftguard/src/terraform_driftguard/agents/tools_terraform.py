@@ -297,3 +297,29 @@ def search_terraform_support(provider: str = "google", resource: str = "") -> di
 
     base = registry_cache.get_or_compute(cache_key, _compute)
     return {**base, "resource_queried": resource}
+
+
+# ── Scope guard (blast-radius confinement) ─────────────────────────────────
+def check_patch_scope(product: str, content: str, file_path: str = "") -> dict[str, Any]:
+    """Check whether a patch touches only the product's resource family + paths.
+
+    Returns the classification (in_scope / out_of_scope resource blocks and
+    whether the file is under the product's module_paths). Use before saving a
+    patch; if out_of_scope is non-empty, strip it with strip_patch_scope.
+    """
+    from ..common import scope_guard
+
+    return scope_guard.check_scope(product, content, file_path)
+
+
+def strip_patch_scope(product: str, content: str) -> dict[str, Any]:
+    """Remove any resource blocks outside the product's family from a patch.
+
+    Keeps in-family resources and all non-resource content (variables, locals,
+    outputs). Returns {content, stripped, kept}. This enforces that a Spanner
+    run only changes Spanner resources, leaving IAM/KMS/etc. in the same file
+    untouched.
+    """
+    from ..common import scope_guard
+
+    return scope_guard.strip_out_of_scope(product, content)

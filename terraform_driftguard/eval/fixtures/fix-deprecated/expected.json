@@ -1,0 +1,10 @@
+{
+  "expectation": "patch",
+  "candidate_correct": true,
+  "provider": "google",
+  "resource": "google_storage_bucket",
+  "required_version": "6.2.0",
+  "current_constraint": ">= 6.0",
+  "must_contain": ["uniform_bucket_level_access"],
+  "must_not_contain": ["bucket_policy_only"]
+}

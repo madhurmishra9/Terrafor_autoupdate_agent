@@ -1,0 +1,9 @@
+{
+  "product": "Azure Blob Storage",
+  "version": "4.12.0",
+  "release_date": "2026-02-01",
+  "title": "azurerm_storage_account: enable_https_traffic_only renamed to https_traffic_only_enabled",
+  "description": "The enable_https_traffic_only argument is deprecated in favour of https_traffic_only_enabled.",
+  "url": "https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs",
+  "is_ga": true
+}

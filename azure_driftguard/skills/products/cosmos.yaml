@@ -4,8 +4,13 @@ aliases:
   - Azure Cosmos DB
   - Cosmos DB
   - azurerm_cosmosdb
+provider: azurerm
+provider_version: ">= 4.0"
 resources:
   - azurerm_cosmosdb_account
+related_resources:
+  - azurerm_cosmosdb_sql_database
+  - azurerm_cosmosdb_sql_container
 module_paths:
   - modules/cosmos
 # Tracked but review-only example.

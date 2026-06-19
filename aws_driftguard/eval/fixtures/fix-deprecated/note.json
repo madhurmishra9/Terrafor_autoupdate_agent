@@ -1,0 +1,9 @@
+{
+  "product": "Amazon S3",
+  "version": "5.70.0",
+  "release_date": "2026-02-01",
+  "title": "aws_s3_bucket: inline acl is deprecated; use aws_s3_bucket_acl resource",
+  "description": "The inline acl argument on aws_s3_bucket is deprecated in favour of the aws_s3_bucket_acl resource.",
+  "url": "https://registry.terraform.io/providers/hashicorp/aws/latest/docs",
+  "is_ga": true
+}

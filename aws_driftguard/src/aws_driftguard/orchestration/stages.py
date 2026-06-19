@@ -27,7 +27,7 @@ STAGES: list[StageSpec] = [
         output_key="release_notes",
         model_tier="fast",
         guard="none",
-        tools=["fetch_aws_release_notes", "parse_xml_entry", "list_aws_products",
+        tools=["list_feeds", "fetch_aws_release_notes", "parse_xml_entry", "list_aws_products",
                "get_current_timestamp", "score_release_relevance"],
     ),
     StageSpec(
@@ -42,7 +42,7 @@ STAGES: list[StageSpec] = [
         name="ChangeAnalyserAgent",
         skill="skills/change_analyser/SKILL.md",
         output_key="change_analyser_result",
-        tools=["search_terraform_support", "check_org_policy_support", "fetch_webpage"],
+        tools=["search_terraform_support", "check_org_policy_support", "list_product_resources", "resolve_attribute_owner", "list_family_schema", "fetch_webpage"],
     ),
     StageSpec(
         name="DecisionMakerAgent",
@@ -56,6 +56,7 @@ STAGES: list[StageSpec] = [
         skill="skills/terraform/SKILL.md",
         output_key="terraform_result",
         tools=["list_artifact_files", "load_artifacts", "save_artifacts_from_content",
+               "check_patch_scope", "strip_patch_scope",
                "get_provider_schema", "extract_resource_schema", "check_version_pin",
                "validate_hcl", "plan_hcl", "verify_patch", "judge_patch",
                "search_terraform_support"],

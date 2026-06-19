@@ -1,0 +1,9 @@
+{
+  "product": "Azure SQL Database",
+  "version": "4.10.0",
+  "release_date": "2026-01-15",
+  "title": "azurerm_mssql_database adds transparent_data_encryption_key_automatic_rotation_enabled",
+  "description": "A new argument enables automatic TDE key rotation.",
+  "url": "https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs",
+  "is_ga": true
+}

@@ -132,5 +132,9 @@ tests/           unit tests (run without ADK)
 - `docs/ARCHITECTURE.md` — pipeline contract, state keys, guards, per-agent detail.
 - `docs/FEATURES.md` — accuracy + optimisation features and how to toggle them.
 - `docs/SKILLS_SOURCE.md` — serve skills from the repo at runtime (no redeploy).
+- `docs/EVAL.md` — accuracy eval harness: measure first-pass / verified / false-drop.
+- `docs/SCHEDULING.md` — which feeds are fetched and when the pipeline runs.
+- `docs/RESOURCE_FAMILIES.md` — resource families & schema-grounded second-level resolution.
+- `docs/SCOPE_GUARD.md` — confine each update to the product (strip out-of-family edits).
 - `docs/IMPLEMENTATION_PLAN.md` — phased rollout, milestones, runbook.
 - `skills/<agent>/README.md` — per-agent why/what/when/where.

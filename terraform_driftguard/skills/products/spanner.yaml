@@ -4,9 +4,15 @@ aliases:
   - Cloud Spanner
   - Spanner
   - google_spanner
+provider: google
+provider_version: ">= 6.0"
 resources:
   - google_spanner_instance
   - google_spanner_database
+related_resources:
+  - google_spanner_database_iam_member      # Spanner's OWN iam resource is in-family
+  - google_spanner_instance_iam_member
+  - google_spanner_instance_config
 module_paths:
   - modules/spanner
 # Example of a product that exists but needs manual review before auto-patching:

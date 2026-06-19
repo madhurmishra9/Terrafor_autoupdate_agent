@@ -1,16 +1,43 @@
+# Cloud Storage — illustrates a product that is a RESOURCE FAMILY, not one
+# resource. A feature like "custom context" is an attribute of the storage
+# OBJECT, not the bucket. Declaring the family + using resolve_attribute_owner
+# lets the agent patch the right resource instead of hallucinating it onto the
+# bucket.
 name: Cloud Storage
 enabled: true
 aliases:
   - Cloud Storage
   - GCS
   - google_storage
+
+# The provider + version to ground Terraform syntax against (optional; defaults
+# to the cloud's provider and the module's pin).
+provider: google
+provider_version: ">= 6.0"
+
+# Resource family: primary resource(s) + related/secondary resources where
+# features often live.
 resources:
   - google_storage_bucket
+related_resources:
+  - google_storage_bucket_object          # "custom context" lives here
+  - google_storage_object_access_control
   - google_storage_bucket_iam_member
+  - google_storage_bucket_acl
+
 module_paths:
   - modules/gcs
+
 policy_allowed: true
+
+# Product owner's own feeds (in addition to the shared cloud feed). Either a
+# single feed_url or a feeds: list.
+feeds:
+  - url: https://cloud.google.com/feeds/storage-release-notes.xml
+    format: atom
+
 relevance_topics:
-  - Cloud Storage bucket
+  - Cloud Storage custom context
+  - GCS object metadata
   - GCS soft delete
   - GCS autoclass

@@ -1,0 +1,10 @@
+{
+  "expectation": "review",
+  "candidate_correct": false,
+  "provider": "azurerm",
+  "resource": "azurerm_cosmosdb_account",
+  "required_version": "4.15.0",
+  "current_constraint": ">= 4.0",
+  "must_contain": ["consistency_policy"],
+  "must_not_contain": []
+}

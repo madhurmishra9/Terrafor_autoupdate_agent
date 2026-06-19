@@ -1,0 +1,9 @@
+{
+  "product": "Cloud Storage",
+  "version": "6.2.0",
+  "release_date": "2026-02-01",
+  "title": "google_storage_bucket: bucket_policy_only is deprecated; use uniform_bucket_level_access",
+  "description": "The bucket_policy_only field is deprecated in favour of uniform_bucket_level_access.",
+  "url": "https://registry.terraform.io/providers/hashicorp/google/latest/docs",
+  "is_ga": true
+}

@@ -1,0 +1,10 @@
+{
+  "expectation": "patch",
+  "candidate_correct": true,
+  "provider": "google",
+  "resource": "google_sql_database_instance",
+  "required_version": "6.1.0",
+  "current_constraint": ">= 6.0, < 7.0",
+  "must_contain": ["data_cache_config"],
+  "must_not_contain": ["data_cashe", "datacache_enabled"]
+}

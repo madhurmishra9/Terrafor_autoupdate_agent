@@ -1,0 +1,9 @@
+{
+  "product": "Amazon DynamoDB",
+  "version": "5.75.0",
+  "release_date": "2026-02-10",
+  "title": "DynamoDB adds a new table_class option",
+  "description": "Adds table_class. Note: switching billing mode can be disruptive.",
+  "url": "https://registry.terraform.io/providers/hashicorp/aws/latest/docs",
+  "is_ga": true
+}

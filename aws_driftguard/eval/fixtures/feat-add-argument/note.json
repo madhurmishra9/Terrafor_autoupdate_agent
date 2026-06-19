@@ -1,0 +1,9 @@
+{
+  "product": "Amazon RDS",
+  "version": "5.80.0",
+  "release_date": "2026-01-15",
+  "title": "Amazon RDS adds storage_throughput for gp3 volumes in aws_db_instance",
+  "description": "A new storage_throughput argument configures gp3 throughput.",
+  "url": "https://registry.terraform.io/providers/hashicorp/aws/latest/docs",
+  "is_ga": true
+}

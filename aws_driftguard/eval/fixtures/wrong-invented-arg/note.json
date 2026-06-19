@@ -1,0 +1,9 @@
+{
+  "product": "Amazon RDS",
+  "version": "5.80.0",
+  "release_date": "2026-01-20",
+  "title": "Amazon RDS adds dedicated log exports configuration",
+  "description": "Configure log exports.",
+  "url": "https://registry.terraform.io/providers/hashicorp/aws/latest/docs",
+  "is_ga": true
+}

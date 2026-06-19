@@ -43,10 +43,33 @@ class Product:
     name: str
     enabled: bool = True
     aliases: tuple[str, ...] = ()
+    # Primary Terraform resources for this product.
     resources: tuple[str, ...] = ()
+    # Secondary / related resources in the same product family. Features often
+    # live here rather than on the primary resource (e.g. an attribute on
+    # google_storage_bucket_object, not google_storage_bucket). The deep
+    # resolver searches these so the agent patches the right resource.
+    related_resources: tuple[str, ...] = ()
     module_paths: tuple[str, ...] = ()
     policy_allowed: bool = False
     relevance_topics: tuple[str, ...] = ()
+    # Feeds the product owner wants polled (in addition to the shared cloud
+    # feed). Either a single feed_url or a list of feeds.
+    feed_url: str = ""
+    feed_format: str = "auto"   # "auto" | "atom" | "rss"
+    feeds_list: tuple[tuple[str, str], ...] = ()  # ((url, format), ...)
+    # Provider these resources belong to (defaults to the cloud's provider) and
+    # the version constraint to ground Terraform syntax against.
+    provider: str = ""
+    provider_version: str = ""
+
+    @property
+    def family(self) -> tuple[str, ...]:
+        """All resources in this product: primary + related, de-duplicated."""
+        seen: dict[str, None] = {}
+        for r in (*self.resources, *self.related_resources):
+            seen.setdefault(r, None)
+        return tuple(seen.keys())
 
     @property
     def match_terms(self) -> tuple[str, ...]:
@@ -106,14 +129,22 @@ class ProductRegistry:
             if not name:
                 logger.warning("product manifest %s missing 'name'; skipped", fname)
                 continue
+            primary, related = _parse_resources(data.get("resources"),
+                                                data.get("related_resources"))
             products.append(Product(
                 name=name,
                 enabled=bool(data.get("enabled", True)),
                 aliases=tuple(data.get("aliases", []) or []),
-                resources=tuple(data.get("resources", []) or []),
+                resources=primary,
+                related_resources=related,
                 module_paths=tuple(data.get("module_paths", []) or []),
                 policy_allowed=bool(data.get("policy_allowed", False)),
                 relevance_topics=tuple(data.get("relevance_topics", []) or []),
+                feed_url=str(data.get("feed_url", "") or ""),
+                feed_format=str(data.get("feed_format", "auto") or "auto"),
+                feeds_list=_parse_feeds(data.get("feeds")),
+                provider=str(data.get("provider", "") or ""),
+                provider_version=str(data.get("provider_version", "") or ""),
             ))
         return products
 
@@ -169,9 +200,104 @@ class ProductRegistry:
                 return list(p.resources)
         return []
 
+    def family_for(self, product: str) -> list[str]:
+        """All resources (primary + related) for a product — the deep-scan set."""
+        for p in self.all():
+            if _norm(p.name) == _norm(product):
+                return list(p.family)
+        return []
+
+    def related_resources_for(self, product: str) -> list[str]:
+        for p in self.all():
+            if _norm(p.name) == _norm(product):
+                return list(p.related_resources)
+        return []
+
+    def provider_for(self, product: str, default: str = "") -> str:
+        for p in self.all():
+            if _norm(p.name) == _norm(product):
+                return p.provider or default
+        return default
+
+    def provider_version_for(self, product: str) -> str:
+        for p in self.all():
+            if _norm(p.name) == _norm(product):
+                return p.provider_version
+        return ""
+
+    def get(self, product: str) -> Product | None:
+        for p in self.all():
+            if _norm(p.name) == _norm(product):
+                return p
+        return None
+
+    def feeds(self, shared_feed_url: str = "") -> list[dict[str, str]]:
+        """Return the feeds RequestProcessor should fetch this run.
+
+        Always includes the shared cloud feed (when provided), plus any feed the
+        product owner declared — either a single feed_url or a feeds: list.
+        De-duplicated by URL. Each entry is {url, format, product}.
+        """
+        feeds: list[dict[str, str]] = []
+        seen: set[str] = set()
+        if shared_feed_url:
+            feeds.append({"url": shared_feed_url, "format": "auto", "product": ""})
+            seen.add(shared_feed_url)
+        for p in self.all():
+            product_feeds: list[tuple[str, str]] = []
+            if p.feed_url:
+                product_feeds.append((p.feed_url, p.feed_format))
+            product_feeds.extend(p.feeds_list)
+            for url, fmt in product_feeds:
+                if url and url not in seen:
+                    feeds.append({"url": url, "format": fmt, "product": p.name})
+                    seen.add(url)
+        return feeds
+
 
 def _norm(s: str) -> str:
     return s.strip().lower()
+
+
+def _parse_resources(resources: Any, related: Any) -> tuple[tuple[str, ...], tuple[str, ...]]:
+    """Normalise the resources field into (primary, related).
+
+    Supports three shapes for backward + forward compatibility:
+      resources: [a, b]                          -> primary=[a,b], related=[]
+      resources: {primary: [a], related: [b]}    -> primary=[a],   related=[b]
+      resources: [a]  + related_resources: [b]   -> primary=[a],   related=[b]
+    """
+    primary: list[str] = []
+    rel: list[str] = []
+    if isinstance(resources, dict):
+        primary = list(resources.get("primary", []) or [])
+        rel = list(resources.get("related", []) or [])
+    elif isinstance(resources, list):
+        primary = list(resources)
+    if related:
+        rel.extend(r for r in related if r not in rel)
+    return tuple(primary), tuple(rel)
+
+
+def _parse_feeds(feeds: Any) -> tuple[tuple[str, str], ...]:
+    """Normalise the optional feeds: field into ((url, format), ...).
+
+    Supports:
+      feeds: [https://...a.xml, https://...b.xml]
+      feeds: [{url: https://...a.xml, format: atom}, ...]
+    """
+    out: list[tuple[str, str]] = []
+    if not feeds:
+        return ()
+    for item in feeds:
+        if isinstance(item, dict):
+            url = str(item.get("url", "") or "")
+            fmt = str(item.get("format", "auto") or "auto")
+        else:
+            url, fmt = str(item), "auto"
+        if url:
+            out.append((url, fmt))
+    return tuple(out)
 
 
 def _source_desc() -> str:

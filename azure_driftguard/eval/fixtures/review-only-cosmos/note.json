@@ -1,0 +1,9 @@
+{
+  "product": "Azure Cosmos DB",
+  "version": "4.15.0",
+  "release_date": "2026-02-10",
+  "title": "azurerm_cosmosdb_account adds a new consistency option",
+  "description": "Adds a consistency tier. Note: changing consistency may affect SLAs.",
+  "url": "https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs",
+  "is_ga": true
+}

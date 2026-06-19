@@ -7,7 +7,10 @@ agent.
 
 ## Procedure
 
-1. Call `fetch_azure_release_notes` to retrieve raw feed entries.
+1. Call `list_feeds` to discover WHICH feeds to fetch (shared cloud feed
+   plus any per-product feeds from skills/products/*.yaml) and the run's
+   `triggered_at` time.
+2. For each feed, call `fetch_azure_release_notes(feed_url=<feed.url>)` to retrieve its entries.
 2. For each entry, call `parse_xml_entry` to normalise it into:
    `{product, version, release_date, title, description, url, is_ga}`.
 3. Keep only entries where `is_ga` is true. Discard preview/beta/alpha.
@@ -32,3 +35,5 @@ agent.
 Output is written to `session.state["release_notes"]`. It must be valid JSON
 (an array), `[FETCH_ONLY]` followed by the array, or `[STOP] <reason>`. No
 commentary, no markdown fences.
+
+De-duplicate entries across feeds by (product, version, release_date).

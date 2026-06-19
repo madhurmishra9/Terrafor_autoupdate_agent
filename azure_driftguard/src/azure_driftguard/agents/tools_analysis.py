@@ -78,3 +78,58 @@ def get_module_file(file_path: str, ref: str = "") -> dict[str, Any]:
 def list_module_path() -> dict[str, Any]:
     """Return the configured Terraform module root path."""
     return {"module_path": get_config().pipeline.terraform_module_path}
+
+
+# ── Deep / second-level resource resolution (anti-hallucination) ───────────
+def list_product_resources(product: str) -> dict[str, Any]:
+    """Return the full resource family for a product (primary + related)."""
+    from ..common.product_registry import registry
+
+    p = registry.get(product)
+    if not p:
+        return {"product": product, "known": False, "family": []}
+    return {
+        "product": p.name,
+        "known": True,
+        "primary": list(p.resources),
+        "related": list(p.related_resources),
+        "family": list(p.family),
+        "provider": p.provider or _default_provider(),
+        "provider_version": p.provider_version,
+    }
+
+
+def resolve_attribute_owner(product: str, attribute: str, version: str = "") -> dict[str, Any]:
+    """Resolve which resource in a product's family owns an attribute/block.
+
+    Grounds against the real provider schema and returns the owning resource —
+    never a guess. If it can't confirm, returns resolved=false /
+    action=flag_for_review so the agent does not hallucinate an owner.
+    """
+    from ..common import schema_index
+    from ..common.product_registry import registry
+
+    p = registry.get(product)
+    if not p:
+        return {"resolved": False, "reason": "unknown_product", "product": product,
+                "action": "flag_for_review"}
+    provider = p.provider or _default_provider()
+    ver = version or p.provider_version
+    return schema_index.resolve_owner(provider, list(p.family), attribute, ver)
+
+
+def list_family_schema(product: str, version: str = "") -> dict[str, Any]:
+    """Return the grounded attribute/block surface of a product's whole family."""
+    from ..common import schema_index
+    from ..common.product_registry import registry
+
+    p = registry.get(product)
+    if not p:
+        return {"available": False, "reason": "unknown_product", "product": product}
+    provider = p.provider or _default_provider()
+    ver = version or p.provider_version
+    return schema_index.list_family_attributes(provider, list(p.family), ver)
+
+
+def _default_provider() -> str:
+    return "azurerm"

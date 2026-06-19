@@ -1,17 +1,31 @@
+# Amazon S3 — a RESOURCE FAMILY, not one resource. Features like object lock or
+# object-level config live on aws_s3_object / dedicated config resources, NOT on
+# aws_s3_bucket. Declaring the family + resolve_attribute_owner lets the agent
+# patch the right resource instead of hallucinating it onto the bucket.
 name: Amazon S3
 enabled: true
 aliases:
   - Amazon S3
   - S3
   - aws_s3_bucket
+provider: aws
+provider_version: ">= 5.0"
 resources:
   - aws_s3_bucket
-  - aws_s3_bucket_policy
+related_resources:
+  - aws_s3_object                          # object-level features live here
   - aws_s3_bucket_versioning
+  - aws_s3_bucket_lifecycle_configuration
+  - aws_s3_bucket_policy
+  - aws_s3_bucket_server_side_encryption_configuration
+  - aws_s3_bucket_acl
 module_paths:
   - modules/s3
 policy_allowed: true
+feeds:
+  - url: https://aws.amazon.com/about-aws/whats-new/storage/feed/
+    format: rss
 relevance_topics:
-  - S3 bucket
+  - S3 object lock
   - S3 lifecycle
   - S3 access points

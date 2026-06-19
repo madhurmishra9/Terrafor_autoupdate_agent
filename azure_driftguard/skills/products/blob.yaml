@@ -1,15 +1,28 @@
+# Azure Blob Storage — a RESOURCE FAMILY. Blob-level features (cache control,
+# content settings) live on azurerm_storage_blob, NOT azurerm_storage_account.
+# Declaring the family + resolve_attribute_owner avoids hallucinating attributes
+# onto the account.
 name: Azure Blob Storage
 enabled: true
 aliases:
   - Azure Blob Storage
   - Blob Storage
   - azurerm_storage
+provider: azurerm
+provider_version: ">= 4.0"
 resources:
   - azurerm_storage_account
+related_resources:
   - azurerm_storage_container
+  - azurerm_storage_blob                   # blob-level features live here
+  - azurerm_storage_management_policy
 module_paths:
   - modules/storage
 policy_allowed: true
+feeds:
+  - url: https://azurecomcdn.azureedge.net/en-us/updates/feed/
+    format: rss
 relevance_topics:
   - Blob lifecycle management
   - Storage account SFTP
+  - Blob cache control

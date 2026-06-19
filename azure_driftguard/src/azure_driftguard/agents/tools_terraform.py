@@ -297,3 +297,18 @@ def search_terraform_support(provider: str = "azurerm", resource: str = "") -> d
 
     base = registry_cache.get_or_compute(cache_key, _compute)
     return {**base, "resource_queried": resource}
+
+
+# ── Scope guard (blast-radius confinement) ─────────────────────────────────
+def check_patch_scope(product: str, content: str, file_path: str = "") -> dict[str, Any]:
+    """Check whether a patch touches only the product's resource family + paths."""
+    from ..common import scope_guard
+
+    return scope_guard.check_scope(product, content, file_path)
+
+
+def strip_patch_scope(product: str, content: str) -> dict[str, Any]:
+    """Remove resource blocks outside the product's family from a patch."""
+    from ..common import scope_guard
+
+    return scope_guard.strip_out_of_scope(product, content)

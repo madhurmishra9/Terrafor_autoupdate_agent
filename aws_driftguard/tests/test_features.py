@@ -174,3 +174,123 @@ def test_skills_source_github_mode(monkeypatch):
     assert skills_source.read_text("skills/terraform/SKILL.md") == "# gh skill"
     assert skills_source.list_dir("skills/products") == ["x.yaml"]
     config.get_config.cache_clear()
+
+
+def test_eval_harness_scores_fixtures():
+    from pathlib import Path
+
+    from eval.harness import run_eval
+
+    fixtures = Path(__file__).resolve().parents[1] / "eval" / "fixtures"
+    report = run_eval(fixtures, mode="deterministic")
+    assert report.total == 4
+    by_name = {r.name: r for r in report.results}
+    assert by_name["feat-add-argument"].shipped is True
+    assert by_name["fix-deprecated"].shipped is True
+    assert by_name["review-only-dynamodb"].shipped is False
+    assert by_name["wrong-invented-arg"].shipped is False
+    assert all(r.correct for r in report.results)
+    assert report.verified_accuracy == 1.0
+    assert report.false_drop_rate == 0.0
+
+
+def test_list_feeds_tool_returns_trigger_time():
+    from aws_driftguard.agents import tools_ingest
+
+    result = tools_ingest.list_feeds()
+    assert "feeds" in result and "triggered_at" in result
+    assert result["count"] >= 1
+
+
+def test_product_family_parsing():
+    from aws_driftguard.common.product_registry import ProductRegistry
+
+    p = ProductRegistry().get("Amazon S3")
+    assert p is not None
+    assert "aws_s3_bucket" in p.family
+    assert "aws_s3_object" in p.related_resources
+    assert p.provider == "aws"
+
+
+def test_resolve_attribute_owner_picks_related(monkeypatch):
+    from aws_driftguard.agents import tools_terraform
+    from aws_driftguard.common import schema_index
+
+    def fake_extract(provider, resource, version=""):
+        if resource == "aws_s3_bucket":
+            return {"ok": True, "arguments": {"name": {}}, "block_types": []}
+        if resource == "aws_s3_object":
+            return {"ok": True, "arguments": {"name": {}, "object_lock_enabled": {}}, "block_types": []}
+        return {"ok": True, "arguments": {"name": {}}, "block_types": []}
+
+    monkeypatch.setattr(tools_terraform, "extract_resource_schema", fake_extract)
+    schema_index.schema_cache.clear()
+    res = schema_index.resolve_owner("aws", ["aws_s3_bucket", "aws_s3_object"], "object_lock_enabled")
+    assert res["resolved"] is True
+    assert res["owner_resources"] == ["aws_s3_object"]
+    schema_index.schema_cache.clear()
+
+
+def test_resolve_flags_when_schema_unavailable(monkeypatch):
+    from aws_driftguard.agents import tools_terraform
+    from aws_driftguard.common import schema_index
+
+    monkeypatch.setattr(tools_terraform, "extract_resource_schema",
+                        lambda p, r, version="": {"ok": False})
+    schema_index.schema_cache.clear()
+    res = schema_index.resolve_owner("aws", ["aws_s3_bucket"], "object_lock_enabled")
+    assert res["resolved"] is False
+    assert res["action"] == "flag_for_review"
+    schema_index.schema_cache.clear()
+
+
+_MIXED_HCL = '''
+resource "aws_s3_bucket" "main" {
+  name = "x"
+}
+
+resource "aws_kms_key" "key" {
+  name = "k"
+}
+
+resource "aws_iam_role" "role" {
+  name = "r"
+}
+
+variable "region" { default = "us" }
+'''
+
+
+def test_scope_guard_identifies_in_and_out_of_family():
+    from aws_driftguard.common import scope_guard
+
+    res = scope_guard.check_scope("Amazon S3", _MIXED_HCL, file_path="modules/s3/main.tf")
+    in_types = {r["type"] for r in res["in_scope"]}
+    out_types = {r["type"] for r in res["out_of_scope"]}
+    assert "aws_s3_bucket" in in_types
+    assert "aws_kms_key" in out_types
+    assert "aws_iam_role" in out_types
+    assert res["path_in_scope"] is True
+    assert res["ok"] is False
+
+
+def test_scope_guard_strips_out_of_family_keeps_rest():
+    from aws_driftguard.common import scope_guard
+
+    out = scope_guard.strip_out_of_scope("Amazon S3", _MIXED_HCL)
+    content = out["content"]
+    assert "aws_s3_bucket" in content
+    assert 'variable "region"' in content
+    assert "aws_kms_key" not in content
+    assert "aws_iam_role" not in content
+    assert {r["type"] for r in out["stripped"]} == {"aws_kms_key", "aws_iam_role"}
+
+
+def test_scope_guard_path_confinement():
+    from aws_driftguard.common import scope_guard
+
+    res = scope_guard.check_scope("Amazon S3",
+                                  'resource "aws_s3_bucket" "m" {}',
+                                  file_path="modules/iam/main.tf")
+    assert res["path_in_scope"] is False
+    assert res["ok"] is False

@@ -35,17 +35,19 @@ def _register(module: Any, names: list[str]) -> None:
 
 
 _register(tools_ingest, [
-    "fetch_azure_release_notes", "parse_xml_entry", "list_azure_products",
+    "fetch_azure_release_notes", "list_feeds", "parse_xml_entry", "list_azure_products",
     "get_current_timestamp", "check_existing_release_note",
     "save_classification_to_database",
 ])
 _register(tools_relevance, ["score_release_relevance"])
 _register(tools_analysis, [
     "search_terraform_support", "check_org_policy_support", "fetch_webpage",
+    "list_product_resources", "resolve_attribute_owner", "list_family_schema",
     "get_module_file", "list_module_path",
 ])
 _register(tools_terraform, [
     "list_artifact_files", "load_artifacts", "save_artifacts_from_content",
+    "check_patch_scope", "strip_patch_scope",
     "get_provider_schema", "extract_resource_schema", "check_version_pin",
     "validate_hcl", "plan_hcl", "verify_patch", "search_terraform_support",
 ])

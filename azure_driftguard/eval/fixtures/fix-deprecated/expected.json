@@ -1,0 +1,10 @@
+{
+  "expectation": "patch",
+  "candidate_correct": true,
+  "provider": "azurerm",
+  "resource": "azurerm_storage_account",
+  "required_version": "4.12.0",
+  "current_constraint": ">= 4.0",
+  "must_contain": ["https_traffic_only_enabled"],
+  "must_not_contain": ["enable_https_traffic_only"]
+}

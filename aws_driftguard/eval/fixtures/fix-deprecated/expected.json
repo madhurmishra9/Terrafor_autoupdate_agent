@@ -1,0 +1,10 @@
+{
+  "expectation": "patch",
+  "candidate_correct": true,
+  "provider": "aws",
+  "resource": "aws_s3_bucket",
+  "required_version": "5.70.0",
+  "current_constraint": ">= 5.0",
+  "must_contain": ["aws_s3_bucket_acl"],
+  "must_not_contain": ["acl                 ="]
+}

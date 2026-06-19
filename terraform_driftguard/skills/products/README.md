@@ -59,3 +59,22 @@ relevance_topics:               # extra phrases that strengthen the embedding
   manual review instead of opening a PR.
 - The same schema is used by the AWS and Azure editions; only the `resources`
   prefixes differ (`aws_`, `azurerm_`).
+
+## Resource families & deep resolution
+
+A product is usually a **family** of resources, not one. Declare secondary
+resources via `related_resources` (or `resources: {primary: [...], related:
+[...]}`) so features that live on a secondary resource — e.g. *custom context*
+on `google_storage_bucket_object`, not the bucket — are found and patched on the
+right resource. ChangeAnalyser calls `resolve_attribute_owner`, which grounds
+against the real provider schema and never guesses. See
+`docs/RESOURCE_FAMILIES.md`.
+
+New optional manifest fields:
+
+| Field | Purpose |
+|-------|---------|
+| `related_resources` | secondary resources in the family (deep-scan set) |
+| `provider` | provider these resources belong to (defaults to the cloud's) |
+| `provider_version` | version constraint to ground Terraform syntax against |
+| `feeds` | the product owner's own feed list (url + format) |

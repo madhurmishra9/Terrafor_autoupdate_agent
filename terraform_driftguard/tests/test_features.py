@@ -156,3 +156,177 @@ def test_skills_source_github_mode(monkeypatch):
     assert skills_source.read_text("skills/terraform/SKILL.md") == "# gh skill"
     assert skills_source.list_dir("skills/products") == ["x.yaml"]
     config.get_config.cache_clear()
+
+
+def test_eval_harness_scores_fixtures():
+    from pathlib import Path
+
+    from eval.harness import run_eval
+
+    fixtures = Path(__file__).resolve().parents[1] / "eval" / "fixtures"
+    report = run_eval(fixtures, mode="deterministic")
+    assert report.total == 4
+    # All four fixtures should be scored correctly by the verification + policy layer.
+    by_name = {r.name: r for r in report.results}
+    assert by_name["feat-add-argument"].shipped is True
+    assert by_name["fix-deprecated"].shipped is True
+    assert by_name["review-only-spanner"].shipped is False   # policy_allowed:false
+    assert by_name["wrong-invented-arg"].shipped is False    # caught by contract
+    assert all(r.correct for r in report.results)
+    # Verified accuracy = of shipped, how many correct = 100% here.
+    assert report.verified_accuracy == 1.0
+    assert report.false_drop_rate == 0.0
+
+
+def test_list_feeds_includes_shared_and_product_feeds(monkeypatch):
+    from terraform_driftguard.common.product_registry import ProductRegistry
+
+    reg = ProductRegistry()
+    # Shared feed always present.
+    feeds = reg.feeds(shared_feed_url="https://example.com/shared.xml")
+    urls = [f["url"] for f in feeds]
+    assert "https://example.com/shared.xml" in urls
+    # Shared feed entry has empty product; product feeds carry their name.
+    shared = [f for f in feeds if f["product"] == ""]
+    assert len(shared) == 1
+
+
+def test_list_feeds_tool_returns_trigger_time():
+    from terraform_driftguard.agents import tools_ingest
+
+    result = tools_ingest.list_feeds()
+    assert "feeds" in result and "triggered_at" in result
+    assert result["count"] >= 1
+
+
+def test_product_family_parsing():
+    from terraform_driftguard.common.product_registry import ProductRegistry
+
+    reg = ProductRegistry()
+    p = reg.get("Cloud Storage")
+    assert p is not None
+    # Family = primary + related, with the object resource present.
+    assert "google_storage_bucket" in p.family
+    assert "google_storage_bucket_object" in p.related_resources
+    assert "google_storage_bucket_object" in p.family
+    assert p.provider == "google"
+
+
+def test_resolve_attribute_owner_picks_related_not_primary(monkeypatch):
+    from terraform_driftguard.agents import tools_terraform
+    from terraform_driftguard.common import schema_index
+
+    def fake_extract(provider, resource, version=""):
+        if resource == "google_storage_bucket":
+            return {"ok": True, "arguments": {"name": {}, "location": {}}, "block_types": []}
+        if resource == "google_storage_bucket_object":
+            return {"ok": True, "arguments": {"name": {}, "custom_context": {}}, "block_types": []}
+        return {"ok": True, "arguments": {"name": {}}, "block_types": []}
+
+    monkeypatch.setattr(tools_terraform, "extract_resource_schema", fake_extract)
+    schema_index.schema_cache.clear()
+
+    family = ["google_storage_bucket", "google_storage_bucket_object"]
+    res = schema_index.resolve_owner("google", family, "custom_context")
+    assert res["resolved"] is True
+    assert res["owner_resources"] == ["google_storage_bucket_object"]
+    schema_index.schema_cache.clear()
+
+
+def test_resolve_attribute_owner_flags_when_schema_unavailable(monkeypatch):
+    from terraform_driftguard.agents import tools_terraform
+    from terraform_driftguard.common import schema_index
+
+    # Schema not grounded -> must NOT guess; flag for review.
+    monkeypatch.setattr(tools_terraform, "extract_resource_schema",
+                        lambda p, r, version="": {"ok": False})
+    schema_index.schema_cache.clear()
+    res = schema_index.resolve_owner("google", ["google_storage_bucket"], "custom_context")
+    assert res["resolved"] is False
+    assert res["action"] == "flag_for_review"
+    schema_index.schema_cache.clear()
+
+
+def test_resolve_attribute_owner_not_found(monkeypatch):
+    from terraform_driftguard.agents import tools_terraform
+    from terraform_driftguard.common import schema_index
+
+    monkeypatch.setattr(tools_terraform, "extract_resource_schema",
+                        lambda p, r, version="": {"ok": True, "arguments": {"name": {}}, "block_types": []})
+    schema_index.schema_cache.clear()
+    res = schema_index.resolve_owner("google", ["google_storage_bucket"], "nonexistent_attr")
+    assert res["resolved"] is False
+    assert res["reason"] == "attribute_not_found"
+    assert res["action"] == "flag_for_review"
+    schema_index.schema_cache.clear()
+
+
+_SPANNER_MIXED_HCL = '''
+resource "google_spanner_instance" "main" {
+  name      = "main-instance"
+  num_nodes = 1
+}
+
+resource "google_kms_crypto_key" "key" {
+  name     = "spanner-cmek"
+  key_ring = "ring"
+}
+
+resource "google_project_iam_member" "admin" {
+  project = "p"
+  role    = "roles/spanner.admin"
+  member  = "user:a@b.com"
+}
+
+variable "region" { default = "us-central1" }
+'''
+
+
+def test_scope_guard_identifies_in_and_out_of_family():
+    from terraform_driftguard.common import scope_guard
+
+    res = scope_guard.check_scope("Cloud Spanner", _SPANNER_MIXED_HCL,
+                                  file_path="modules/spanner/main.tf")
+    in_types = {r["type"] for r in res["in_scope"]}
+    out_types = {r["type"] for r in res["out_of_scope"]}
+    assert "google_spanner_instance" in in_types
+    assert "google_kms_crypto_key" in out_types
+    assert "google_project_iam_member" in out_types
+    assert res["path_in_scope"] is True
+    assert res["ok"] is False  # has out-of-scope resources
+
+
+def test_scope_guard_strips_out_of_family_keeps_rest():
+    from terraform_driftguard.common import scope_guard
+
+    out = scope_guard.strip_out_of_scope("Cloud Spanner", _SPANNER_MIXED_HCL)
+    content = out["content"]
+    # Spanner resource and the variable survive; KMS + IAM are removed.
+    assert "google_spanner_instance" in content
+    assert 'variable "region"' in content
+    assert "google_kms_crypto_key" not in content
+    assert "google_project_iam_member" not in content
+    stripped = {r["type"] for r in out["stripped"]}
+    assert stripped == {"google_kms_crypto_key", "google_project_iam_member"}
+
+
+def test_scope_guard_path_confinement():
+    from terraform_driftguard.common import scope_guard
+
+    # A file outside the product's module_paths is flagged.
+    res = scope_guard.check_scope("Cloud Spanner",
+                                  'resource "google_spanner_instance" "m" {}',
+                                  file_path="modules/iam/main.tf")
+    assert res["path_in_scope"] is False
+    assert res["ok"] is False
+
+
+def test_scope_guard_spanner_own_iam_is_in_family():
+    from terraform_driftguard.common import scope_guard
+
+    hcl = 'resource "google_spanner_database_iam_member" "x" {}'
+    res = scope_guard.check_scope("Cloud Spanner", hcl)
+    # Spanner's OWN iam resource is in-family (it is Spanner config); only
+    # generic non-Spanner resources are out of scope.
+    assert {r["type"] for r in res["in_scope"]} == {"google_spanner_database_iam_member"}
+    assert res["out_of_scope"] == []

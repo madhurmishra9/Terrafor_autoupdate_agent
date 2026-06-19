@@ -1,0 +1,9 @@
+{
+  "product": "Cloud Spanner",
+  "version": "6.3.0",
+  "release_date": "2026-02-10",
+  "title": "Cloud Spanner supports a new database_dialect option",
+  "description": "Spanner adds a database_dialect argument. Note: changing dialect forces resource replacement.",
+  "url": "https://cloud.google.com/spanner/docs/release-notes",
+  "is_ga": true
+}

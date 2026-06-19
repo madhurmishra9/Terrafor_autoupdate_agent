@@ -1,0 +1,10 @@
+{
+  "expectation": "review",
+  "candidate_correct": false,
+  "provider": "google",
+  "resource": "google_spanner_database",
+  "required_version": "6.3.0",
+  "current_constraint": ">= 6.0",
+  "must_contain": ["database_dialect"],
+  "must_not_contain": []
+}

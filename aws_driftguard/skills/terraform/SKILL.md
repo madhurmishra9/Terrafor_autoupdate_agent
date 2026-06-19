@@ -50,8 +50,24 @@ For each file in `decision_maker_result.files_to_patch`:
   - If `passed=false`: read `issues`, regenerate once more addressing them, then
     re-verify and re-judge. If it still fails, do NOT save; record the issues.
 
-### 6. Save
-- Only after verify + judge pass, call `save_artifacts_from_content`.
+### 6. Scope guard — confine the blast radius to this product (REQUIRED)
+- Call `check_patch_scope(product, content, file_path)`. It classifies every
+  `resource` block in your patch as in-family or out-of-family for this product,
+  and checks the file is under the product's `module_paths`.
+  - If `out_of_scope` is non-empty, you edited resources that do NOT belong to
+    this product (e.g. an IAM, KMS, or networking block in the same file). Call
+    `strip_patch_scope(product, content)` and use the returned `content` — it
+    keeps only the product's own resources and leaves everything else exactly as
+    it was. A Spanner run must change only Spanner resources; an S3 run only S3
+    resources; etc.
+  - If `path_in_scope` is false, the file is outside the product's
+    `module_paths`. Do NOT save it; record it for review.
+- Re-run nothing else; the stripped content is final.
+
+### 7. Save
+- Only after verify + judge pass AND the scope guard leaves an in-family,
+  in-path patch, call `save_artifacts_from_content` with the (possibly stripped)
+  content.
 
 ## Syntactic rules
 - Valid HCL: no unclosed blocks, no invalid argument names.

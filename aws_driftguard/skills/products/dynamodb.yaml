@@ -4,8 +4,13 @@ aliases:
   - Amazon DynamoDB
   - DynamoDB
   - aws_dynamodb_table
+provider: aws
+provider_version: ">= 5.0"
 resources:
   - aws_dynamodb_table
+related_resources:
+  - aws_dynamodb_table_item
+  - aws_dynamodb_contributor_insights
 module_paths:
   - modules/dynamodb
 # Tracked but review-only example.

@@ -1,0 +1,9 @@
+{
+  "product": "Azure SQL Database",
+  "version": "4.10.0",
+  "release_date": "2026-01-20",
+  "title": "azurerm_mssql_database adds short term retention configuration",
+  "description": "Configure short term retention.",
+  "url": "https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs",
+  "is_ga": true
+}

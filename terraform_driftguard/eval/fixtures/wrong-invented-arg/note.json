@@ -1,0 +1,9 @@
+{
+  "product": "Cloud SQL",
+  "version": "6.1.0",
+  "release_date": "2026-01-20",
+  "title": "Cloud SQL adds query insights configuration",
+  "description": "Configure query insights via query_insights_config.",
+  "url": "https://cloud.google.com/sql/docs/release-notes",
+  "is_ga": true
+}
