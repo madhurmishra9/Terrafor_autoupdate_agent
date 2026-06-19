@@ -52,6 +52,18 @@ for the diagram.
 - **Accuracy features** — provider schema grounding, self-correcting
   validate→plan loop, version-pinning gate, and a judge/critic pass before any
   PR. See `docs/FEATURES.md`.
+- **Declarative product onboarding** — products are manifest files in
+  `skills/products/*.yaml` (feeds, aliases, resource family, policy); add one to
+  onboard, no code change, no redeploy with `SKILLS_SOURCE=github`.
+- **Resource families + second-level resolution** — a product is a family of
+  resources; a changed attribute is resolved to the resource that *actually*
+  owns it via the real provider schema (no hallucinating it onto the wrong
+  resource). See `docs/RESOURCE_FAMILIES.md`.
+- **Scope guard** — every update is confined to the product's own resources and
+  module paths; unrelated IAM/KMS/etc. in the same file are left untouched. See
+  `docs/SCOPE_GUARD.md`.
+- **Accuracy eval harness** — measure first-pass / verified / false-drop accuracy
+  on your own modules (`docs/EVAL.md`).
 - **Optimisation features** — tiered model routing (fast model for parsing,
   pro for reasoning), embedding-based relevance filtering, and a TTL cache for
   schema/registry lookups.
@@ -98,13 +110,30 @@ To onboard a product, drop in a manifest — no Python changes:
 
 ```yaml
 # skills/products/myproduct.yaml
-name: My Product
-aliases: [My Product, google_myproduct]
-resources: [google_myproduct_resource]
-module_paths: [modules/myproduct]
-policy_allowed: true        # false => track + flag for review, don't auto-patch
-relevance_topics: [my product feature]
+name: Cloud Storage
+aliases: [Cloud Storage, GCS]              # keywords to match in release notes
+provider: google
+provider_version: ">= 6.0"               # version to ground Terraform syntax against
+resources:                               # PRIMARY resource(s)
+  - google_storage_bucket
+related_resources:                       # SECOND-LEVEL resources where features hide
+  - google_storage_bucket_object        # e.g. custom_context lives here, not the primary
+  - google_storage_object_access_control
+module_paths: [modules/gcs]              # edits are confined to these paths
+policy_allowed: true                     # false => track + flag for review, don't auto-patch
+feeds:                                   # the product owner's own feed(s), optional
+  - url: https://cloud.google.com/feeds/storage-release-notes.xml
+    format: atom
+relevance_topics: [Cloud Storage custom context]
 ```
+
+Only `name` is required. `related_resources` declares the product's full
+resource family so a feature on a secondary resource (e.g. `custom_context` on
+`google_storage_bucket_object`) is found and patched on the right resource — see
+`docs/RESOURCE_FAMILIES.md`. `provider_version` grounds syntax against the exact
+version. `module_paths` bound the blast radius — an update touches only the
+product's own resources, never IAM/KMS/etc. in the same file (`docs/SCOPE_GUARD.md`).
+`feeds` lets the owner add their own release feed (`docs/SCHEDULING.md`).
 
 With `SKILLS_SOURCE=github` (see `docs/SKILLS_SOURCE.md`) the manifest is read
 from the repo at runtime — commit it and it is live on the next run, no redeploy.
