@@ -11,7 +11,7 @@ This is enforced **deterministically**, not just requested in the skill.
 
 ## How it works
 
-After TerraformAgent generates and verifies a patch, before saving it:
+After GenerateAgent generates and verifies a patch, before saving it:
 
 1. `check_patch_scope(product, content, file_path)` parses every
    `resource "<type>" "<name>"` block and classifies each as **in-family** or

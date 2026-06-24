@@ -1,4 +1,4 @@
-"""Tools for RequestProcessorAgent and ClassificationAgent."""
+"""Tools for IngestAgent and ClassifyAgent."""
 from __future__ import annotations
 
 import xml.etree.ElementTree as ET
@@ -25,7 +25,7 @@ def get_current_timestamp() -> str:
 def list_feeds() -> dict[str, Any]:
     """Return the feeds to fetch this run, and when the run was triggered.
 
-    Tells RequestProcessor WHICH feeds to pull: the shared cloud feed
+    Tells Ingest WHICH feeds to pull: the shared cloud feed
     (RELEASE_FEED_URL) plus any per-product feed_url declared in
     skills/products/*.yaml. The pipeline run itself is triggered on a schedule
     (k8s CronJob / ECS scheduled task), so "when" is the trigger time returned

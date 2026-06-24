@@ -5,7 +5,7 @@ it runs. Neither requires code changes.
 
 ## Which feeds (declarative)
 
-RequestProcessor calls `list_feeds` at the start of every run. It returns:
+Ingest calls `list_feeds` at the start of every run. It returns:
 
 1. **The shared cloud feed** — `RELEASE_FEED_URL` (Azure Updates by default).
    This is the catch-all; products are matched out of it by their `aliases`.
@@ -22,7 +22,7 @@ feed_url: https://cloud.google.com/feeds/azure-sql-updates.xml   # optional
 feed_format: auto        # auto | atom | rss
 ```
 
-RequestProcessor fetches the shared feed plus every per-product feed, normalises
+Ingest fetches the shared feed plus every per-product feed, normalises
 all entries, then de-duplicates by `(product, version, release_date)`. So
 onboarding a product with its own feed is — like everything else — one manifest
 file, no code change. With `SKILLS_SOURCE=github` it needs no redeploy either.

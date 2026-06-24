@@ -1,4 +1,4 @@
-"""Tools for PRAgent: branch, push patched files, open PR, link back to Jira."""
+"""Tools for PublishAgent: branch, push patched files, open PR, link back to Jira."""
 from __future__ import annotations
 
 from typing import Any
@@ -13,7 +13,7 @@ logger = get_logger(__name__)
 
 
 def compute_pr_title(classification: str, ticket_number: str, short_description: str) -> dict[str, Any]:
-    """Compute the PR title using the JiraAgent-owned prefix mapping."""
+    """Compute the PR title using the TicketAgent-owned prefix mapping."""
     mapping = resolve(classification)
     title = f"{mapping.pr_prefix} {ticket_number} {short_description}".strip()
     return {"title": title, "prefix": mapping.pr_prefix}

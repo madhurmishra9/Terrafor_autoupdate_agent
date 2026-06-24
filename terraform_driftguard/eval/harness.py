@@ -125,7 +125,7 @@ def score_fixture(d: Path, mode: str = "deterministic") -> FixtureResult:
     #   None  -> terraform unavailable (unknown); fall back to the static
     #            contract so the harness is still useful without the binary
     #   False -> validate/plan failed -> never ships
-    # Policy gate (ChangeAnalyser stage): a product whose manifest sets
+    # Policy gate (Analyze stage): a product whose manifest sets
     # policy_allowed: false is review-only and must never auto-ship, regardless
     # of how clean the candidate patch is.
     policy_blocks = False

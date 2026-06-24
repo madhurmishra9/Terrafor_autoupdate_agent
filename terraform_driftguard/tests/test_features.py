@@ -130,8 +130,8 @@ def test_skills_source_local_default():
 
     # Default is local; describe_source reflects it.
     assert skills_source.describe_source().startswith("local://")
-    text = skills_source.read_text("skills/terraform/SKILL.md")
-    assert "TerraformAgent" in text
+    text = skills_source.read_text("skills/generate/SKILL.md")
+    assert "GenerateAgent" in text
     names = skills_source.list_dir("skills/products")
     assert any(n.endswith(".yaml") for n in names)
 
@@ -153,7 +153,7 @@ def test_skills_source_github_mode(monkeypatch):
 
     monkeypatch.setattr(skills_source, "_gh_request", fake)
     assert skills_source.describe_source() == "github://org/repo@main/skills"
-    assert skills_source.read_text("skills/terraform/SKILL.md") == "# gh skill"
+    assert skills_source.read_text("skills/generate/SKILL.md") == "# gh skill"
     assert skills_source.list_dir("skills/products") == ["x.yaml"]
     config.get_config.cache_clear()
 

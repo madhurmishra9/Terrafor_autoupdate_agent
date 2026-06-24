@@ -7,7 +7,7 @@ Priority order (per the architecture):
 
 Every public method attempts tier 1, falls back to tier 2 on failure, then
 tier 3, and raises JiraUnreachable only if all three fail. The tier that
-succeeded is recorded on the result so downstream callers (PRAgent linkback)
+succeeded is recorded on the result so downstream callers (PublishAgent linkback)
 reuse the same mechanism.
 
 All rich-text inputs (description, comment body) are ADF documents because the

@@ -29,7 +29,7 @@
 <rect x="60" y="240" width="200" height="110" rx="10" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5" filter="url(#shadow)"/>
 <circle cx="82" cy="262" r="13" fill="#1A73E8"/>
 <text x="82" y="267" font-size="13" font-weight="700" fill="white" text-anchor="middle">1</text>
-<text x="104" y="268" font-size="15" font-weight="700" fill="#202124">RequestProcessor</text>
+<text x="104" y="268" font-size="15" font-weight="700" fill="#202124">Ingest</text>
 <line x1="74" y1="290" x2="246" y2="290" stroke="#1A73E8" stroke-opacity="0.3"/>
 <text x="74" y="308" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">OUTPUT_KEY</text>
 <text x="74" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">release_notes</text>
@@ -38,7 +38,7 @@
 <rect x="274" y="240" width="200" height="110" rx="10" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5" filter="url(#shadow)"/>
 <circle cx="296" cy="262" r="13" fill="#1A73E8"/>
 <text x="296" y="267" font-size="13" font-weight="700" fill="white" text-anchor="middle">2</text>
-<text x="318" y="268" font-size="15" font-weight="700" fill="#202124">Classification</text>
+<text x="318" y="268" font-size="15" font-weight="700" fill="#202124">Classify</text>
 <line x1="288" y1="290" x2="460" y2="290" stroke="#1A73E8" stroke-opacity="0.3"/>
 <text x="288" y="308" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">OUTPUT_KEY</text>
 <text x="288" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">classification_result</text>
@@ -47,7 +47,7 @@
 <rect x="488" y="240" width="200" height="110" rx="10" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5" filter="url(#shadow)"/>
 <circle cx="510" cy="262" r="13" fill="#1A73E8"/>
 <text x="510" y="267" font-size="13" font-weight="700" fill="white" text-anchor="middle">3</text>
-<text x="532" y="268" font-size="15" font-weight="700" fill="#202124">ChangeAnalyser</text>
+<text x="532" y="268" font-size="15" font-weight="700" fill="#202124">Analyze</text>
 <line x1="502" y1="290" x2="674" y2="290" stroke="#1A73E8" stroke-opacity="0.3"/>
 <text x="502" y="308" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">OUTPUT_KEY</text>
 <text x="502" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">change_analyser_result</text>
@@ -56,7 +56,7 @@
 <rect x="702" y="240" width="200" height="110" rx="10" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5" filter="url(#shadow)"/>
 <circle cx="724" cy="262" r="13" fill="#1A73E8"/>
 <text x="724" y="267" font-size="13" font-weight="700" fill="white" text-anchor="middle">4</text>
-<text x="746" y="268" font-size="15" font-weight="700" fill="#202124">DecisionMaker</text>
+<text x="746" y="268" font-size="15" font-weight="700" fill="#202124">Decide</text>
 <line x1="716" y1="290" x2="888" y2="290" stroke="#1A73E8" stroke-opacity="0.3"/>
 <text x="716" y="308" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">OUTPUT_KEY</text>
 <text x="716" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">decision_maker_result</text>
@@ -65,7 +65,7 @@
 <rect x="916" y="240" width="200" height="110" rx="10" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5" filter="url(#shadow)"/>
 <circle cx="938" cy="262" r="13" fill="#1A73E8"/>
 <text x="938" y="267" font-size="13" font-weight="700" fill="white" text-anchor="middle">5</text>
-<text x="960" y="268" font-size="15" font-weight="700" fill="#202124">Terraform</text>
+<text x="960" y="268" font-size="15" font-weight="700" fill="#202124">Generate</text>
 <line x1="930" y1="290" x2="1102" y2="290" stroke="#1A73E8" stroke-opacity="0.3"/>
 <text x="930" y="308" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">OUTPUT_KEY</text>
 <text x="930" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">terraform_result</text>
@@ -74,7 +74,7 @@
 <rect x="1130" y="240" width="200" height="110" rx="10" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5" filter="url(#shadow)"/>
 <circle cx="1152" cy="262" r="13" fill="#1A73E8"/>
 <text x="1152" y="267" font-size="13" font-weight="700" fill="white" text-anchor="middle">6</text>
-<text x="1174" y="268" font-size="15" font-weight="700" fill="#202124">Jira</text>
+<text x="1174" y="268" font-size="15" font-weight="700" fill="#202124">Ticket</text>
 <line x1="1144" y1="290" x2="1316" y2="290" stroke="#1A73E8" stroke-opacity="0.3"/>
 <text x="1144" y="308" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">OUTPUT_KEY</text>
 <text x="1144" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">jira_result</text>
@@ -83,7 +83,7 @@
 <rect x="1344" y="240" width="200" height="110" rx="10" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5" filter="url(#shadow)"/>
 <circle cx="1366" cy="262" r="13" fill="#1A73E8"/>
 <text x="1366" y="267" font-size="13" font-weight="700" fill="white" text-anchor="middle">7</text>
-<text x="1388" y="268" font-size="15" font-weight="700" fill="#202124">PR</text>
+<text x="1388" y="268" font-size="15" font-weight="700" fill="#202124">Publish</text>
 <line x1="1358" y1="290" x2="1530" y2="290" stroke="#1A73E8" stroke-opacity="0.3"/>
 <text x="1358" y="308" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">OUTPUT_KEY</text>
 <text x="1358" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">pr_result</text>
@@ -102,7 +102,7 @@
 <rect x="60" y="540" width="200" height="240" rx="8" fill="white" stroke="#00897B" stroke-width="1.5" filter="url(#shadow)"/>
 <rect x="60" y="540" width="200" height="32" rx="8" fill="#E0F2F1"/>
 <rect x="60" y="560" width="200" height="14" fill="#E0F2F1"/>
-<text x="72" y="561" font-size="12" font-weight="700" fill="#00897B" font-family="ui-monospace, SF Mono, Consolas, monospace">📁 skills/request_processor/</text>
+<text x="72" y="561" font-size="12" font-weight="700" fill="#00897B" font-family="ui-monospace, SF Mono, Consolas, monospace">📁 skills/ingest/</text>
 <text x="74" y="590" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#00897B" font-weight="600">├ SKILL.md</text>
 <text x="74" y="606" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124" font-weight="400">├ examples/</text>
 <text x="74" y="622" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  ga-note.xml</text>
@@ -116,7 +116,7 @@
 <rect x="274" y="540" width="200" height="240" rx="8" fill="white" stroke="#00897B" stroke-width="1.5" filter="url(#shadow)"/>
 <rect x="274" y="540" width="200" height="32" rx="8" fill="#E0F2F1"/>
 <rect x="274" y="560" width="200" height="14" fill="#E0F2F1"/>
-<text x="286" y="561" font-size="12" font-weight="700" fill="#00897B" font-family="ui-monospace, SF Mono, Consolas, monospace">📁 skills/classification/</text>
+<text x="286" y="561" font-size="12" font-weight="700" fill="#00897B" font-family="ui-monospace, SF Mono, Consolas, monospace">📁 skills/classify/</text>
 <text x="288" y="590" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#00897B" font-weight="600">├ SKILL.md</text>
 <text x="288" y="606" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124" font-weight="400">├ taxonomy.md</text>
 <text x="288" y="622" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124" font-weight="400">├ db/</text>
@@ -129,7 +129,7 @@
 <rect x="488" y="540" width="200" height="240" rx="8" fill="white" stroke="#00897B" stroke-width="1.5" filter="url(#shadow)"/>
 <rect x="488" y="540" width="200" height="32" rx="8" fill="#E0F2F1"/>
 <rect x="488" y="560" width="200" height="14" fill="#E0F2F1"/>
-<text x="500" y="561" font-size="12" font-weight="700" fill="#00897B" font-family="ui-monospace, SF Mono, Consolas, monospace">📁 skills/change_analyser/</text>
+<text x="500" y="561" font-size="12" font-weight="700" fill="#00897B" font-family="ui-monospace, SF Mono, Consolas, monospace">📁 skills/analyze/</text>
 <text x="502" y="590" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#00897B" font-weight="600">├ SKILL.md</text>
 <text x="502" y="606" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124" font-weight="400">├ patterns/</text>
 <text x="502" y="622" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  new-argument.md</text>
@@ -142,7 +142,7 @@
 <rect x="702" y="540" width="200" height="240" rx="8" fill="white" stroke="#00897B" stroke-width="1.5" filter="url(#shadow)"/>
 <rect x="702" y="540" width="200" height="32" rx="8" fill="#E0F2F1"/>
 <rect x="702" y="560" width="200" height="14" fill="#E0F2F1"/>
-<text x="714" y="561" font-size="12" font-weight="700" fill="#00897B" font-family="ui-monospace, SF Mono, Consolas, monospace">📁 skills/decision_maker/</text>
+<text x="714" y="561" font-size="12" font-weight="700" fill="#00897B" font-family="ui-monospace, SF Mono, Consolas, monospace">📁 skills/decide/</text>
 <text x="716" y="590" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#00897B" font-weight="600">├ SKILL.md</text>
 <text x="716" y="606" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124" font-weight="400">├ examples/</text>
 <text x="716" y="622" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  module-tree.md</text>
@@ -154,7 +154,7 @@
 <rect x="916" y="540" width="200" height="240" rx="8" fill="white" stroke="#00897B" stroke-width="1.5" filter="url(#shadow)"/>
 <rect x="916" y="540" width="200" height="32" rx="8" fill="#E0F2F1"/>
 <rect x="916" y="560" width="200" height="14" fill="#E0F2F1"/>
-<text x="928" y="561" font-size="12" font-weight="700" fill="#00897B" font-family="ui-monospace, SF Mono, Consolas, monospace">📁 skills/terraform/</text>
+<text x="928" y="561" font-size="12" font-weight="700" fill="#00897B" font-family="ui-monospace, SF Mono, Consolas, monospace">📁 skills/generate/</text>
 <text x="930" y="590" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#00897B" font-weight="600">├ SKILL.md</text>
 <text x="930" y="606" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124" font-weight="400">├ examples/</text>
 <text x="930" y="622" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  feat-add.tf</text>
@@ -168,7 +168,7 @@
 <rect x="1130" y="540" width="200" height="240" rx="8" fill="white" stroke="#00897B" stroke-width="1.5" filter="url(#shadow)"/>
 <rect x="1130" y="540" width="200" height="32" rx="8" fill="#E0F2F1"/>
 <rect x="1130" y="560" width="200" height="14" fill="#E0F2F1"/>
-<text x="1142" y="561" font-size="12" font-weight="700" fill="#00897B" font-family="ui-monospace, SF Mono, Consolas, monospace">📁 skills/jira/</text>
+<text x="1142" y="561" font-size="12" font-weight="700" fill="#00897B" font-family="ui-monospace, SF Mono, Consolas, monospace">📁 skills/ticket/</text>
 <text x="1144" y="590" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#00897B" font-weight="600">├ SKILL.md</text>
 <text x="1144" y="606" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124" font-weight="400">├ templates/</text>
 <text x="1144" y="622" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  feat-ticket.md</text>
@@ -183,7 +183,7 @@
 <rect x="1344" y="540" width="200" height="240" rx="8" fill="white" stroke="#00897B" stroke-width="1.5" filter="url(#shadow)"/>
 <rect x="1344" y="540" width="200" height="32" rx="8" fill="#E0F2F1"/>
 <rect x="1344" y="560" width="200" height="14" fill="#E0F2F1"/>
-<text x="1356" y="561" font-size="12" font-weight="700" fill="#00897B" font-family="ui-monospace, SF Mono, Consolas, monospace">📁 skills/pr/</text>
+<text x="1356" y="561" font-size="12" font-weight="700" fill="#00897B" font-family="ui-monospace, SF Mono, Consolas, monospace">📁 skills/publish/</text>
 <text x="1358" y="590" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#00897B" font-weight="600">├ SKILL.md</text>
 <text x="1358" y="606" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124" font-weight="400">├ templates/</text>
 <text x="1358" y="622" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#5F6368">│  pr-body.md</text>
@@ -206,27 +206,27 @@
 <text x="322" y="952" font-size="14" font-weight="700" fill="#202124">GCP Release Notes</text>
 <text x="322" y="972" font-size="12" fill="#5F6368">RSS / XML feed</text>
 <text x="322" y="1000" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">USED BY</text>
-<text x="390" y="1000" font-size="11" fill="#202124">RequestProcessorAgent</text>
+<text x="390" y="1000" font-size="11" fill="#202124">IngestAgent</text>
 <rect x="576" y="930" width="250" height="85" rx="8" fill="#E6F4EA" stroke="#34A853" stroke-width="1.5"/>
 <text x="590" y="952" font-size="14" font-weight="700" fill="#202124">CloudSQL</text>
 <text x="590" y="972" font-size="12" fill="#5F6368">Postgres (via proxy)</text>
 <text x="590" y="1000" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">USED BY</text>
-<text x="658" y="1000" font-size="11" fill="#202124">ClassificationAgent</text>
+<text x="658" y="1000" font-size="11" fill="#202124">ClassifyAgent</text>
 <rect x="844" y="930" width="250" height="85" rx="8" fill="#E6F4EA" stroke="#34A853" stroke-width="1.5"/>
 <text x="858" y="952" font-size="14" font-weight="700" fill="#202124">Terraform Registry</text>
 <text x="858" y="972" font-size="12" fill="#5F6368">Provider schemas</text>
 <text x="858" y="1000" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">USED BY</text>
-<text x="926" y="1000" font-size="11" fill="#202124">ChangeAnalyser, Terraform</text>
+<text x="926" y="1000" font-size="11" fill="#202124">Analyze, Generate</text>
 <rect x="1112" y="930" width="250" height="85" rx="8" fill="#E6F4EA" stroke="#34A853" stroke-width="1.5"/>
 <text x="1126" y="952" font-size="14" font-weight="700" fill="#202124">GitHub</text>
 <text x="1126" y="972" font-size="12" fill="#5F6368">Modules + PRs (via MCP)</text>
 <text x="1126" y="1000" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">USED BY</text>
-<text x="1194" y="1000" font-size="11" fill="#202124">DecisionMaker, PRAgent</text>
+<text x="1194" y="1000" font-size="11" fill="#202124">Decide, PublishAgent</text>
 <rect x="1380" y="930" width="250" height="85" rx="8" fill="#F3E8FD" stroke="#8430CE" stroke-width="1.5"/>
 <text x="1394" y="952" font-size="14" font-weight="700" fill="#202124">Jira</text>
 <text x="1394" y="972" font-size="12" fill="#5F6368">3-tier: lib → acli → API</text>
 <text x="1394" y="1000" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">USED BY</text>
-<text x="1462" y="1000" font-size="11" fill="#202124">JiraAgent, PRAgent</text>
+<text x="1462" y="1000" font-size="11" fill="#202124">TicketAgent, PublishAgent</text>
 <text x="40" y="1060" font-size="14" font-weight="700" fill="#5F6368" letter-spacing="0.6">KUBERNETES DEPLOYMENT TOPOLOGY</text>
 <rect x="40" y="1078" width="1600" height="215" rx="14" fill="white" stroke="#EA4335" stroke-width="2" stroke-dasharray="6,4"/>
 <rect x="40" y="1078" width="120" height="32" rx="14" fill="#FCE8E6"/>
@@ -251,7 +251,7 @@
 <text x="1172" y="1162" font-size="11" font-weight="600" fill="#80868B" text-anchor="end" letter-spacing="0.5">SIDECAR</text>
 <text x="844" y="1188" font-size="11" fill="#5F6368">• MCP endpoint for GitHub tools</text>
 <text x="844" y="1205" font-size="11" fill="#5F6368">• Listens on localhost:8080</text>
-<text x="844" y="1222" font-size="11" fill="#5F6368">• Used by DecisionMaker, PRAgent</text>
+<text x="844" y="1222" font-size="11" fill="#5F6368">• Used by Decide, PublishAgent</text>
 <text x="844" y="1239" font-size="11" fill="#5F6368">• Restart: Always</text>
 <rect x="1212" y="1138" width="360" height="110" rx="10" fill="#F3E8FD" stroke="#8430CE" stroke-width="1.5" filter="url(#shadow)"/>
 <text x="1228" y="1162" font-size="14" font-weight="700" fill="#202124">jira-connectivity</text>

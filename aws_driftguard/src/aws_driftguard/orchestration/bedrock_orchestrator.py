@@ -98,12 +98,12 @@ def _apply_post_stage_rules(spec: StageSpec, state: dict[str, Any]) -> None:
     """Honour [STOP]/[FETCH_ONLY] markers and fetch-only halting."""
     value = state.get(spec.output_key)
     text = value if isinstance(value, str) else json.dumps(value)
-    if spec.name == "RequestProcessorAgent":
+    if spec.name == "IngestAgent":
         if isinstance(text, str) and text.lstrip().startswith("[STOP]"):
             halt_pipeline(state, "request_processor_stop")
         elif isinstance(text, str) and "[FETCH_ONLY]" in text:
             state["pipeline_mode"] = "fetch_only"
-    if spec.name == "ClassificationAgent" and state.get("pipeline_mode") == "fetch_only":
+    if spec.name == "ClassifyAgent" and state.get("pipeline_mode") == "fetch_only":
         halt_pipeline(state, "fetch_only_notes_saved")
 
 

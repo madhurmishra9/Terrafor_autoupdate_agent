@@ -44,7 +44,7 @@ flat legacy form (`resources: [a, b]`) still works (everything becomes primary).
 
 ## How the agent avoids hallucinating
 
-ChangeAnalyser, for each feature mentioned in a release note:
+Analyze, for each feature mentioned in a release note:
 
 1. `list_product_resources(product)` → gets the full family (primary + related).
 2. `resolve_attribute_owner(product, attribute)` → **grounds against the real

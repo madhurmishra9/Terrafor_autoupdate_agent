@@ -12,7 +12,7 @@ policy_allowed: true
 relevance_topics:
   - AlloyDB cluster
   - AlloyDB CMEK
-# Optional: a product can declare its own feed. When set, RequestProcessor
+# Optional: a product can declare its own feed. When set, Ingest
 # fetches this in addition to the shared cloud feed. Omit to use only the
 # shared RELEASE_FEED_URL and match by aliases.
 feed_url: ""        # e.g. https://cloud.google.com/feeds/alloydb-release-notes.xml

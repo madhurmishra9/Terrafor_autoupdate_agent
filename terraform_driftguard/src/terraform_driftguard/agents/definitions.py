@@ -48,11 +48,11 @@ def build_agents() -> list[Any]:
     model = cfg.gcp.model            # reasoning-heavy agents
     model_fast = cfg.gcp.model_fast  # parsing / bucketing agents (tiered routing)
 
-    request_processor = _llm_agent(
-        name="RequestProcessorAgent",
+    ingest = _llm_agent(
+        name="IngestAgent",
         model=model_fast,
         output_key=RELEASE_NOTES,
-        instruction=skill_instruction_provider("skills/request_processor/SKILL.md"),
+        instruction=skill_instruction_provider("skills/ingest/SKILL.md"),
         tools=[
             tools_ingest.list_feeds,
             tools_ingest.fetch_gcp_release_notes,
@@ -63,11 +63,11 @@ def build_agents() -> list[Any]:
         ],
     )
 
-    classification = _llm_agent(
-        name="ClassificationAgent",
+    classify = _llm_agent(
+        name="ClassifyAgent",
         model=model_fast,
         output_key=CLASSIFICATION_RESULT,
-        instruction=skill_instruction_provider("skills/classification/SKILL.md"),
+        instruction=skill_instruction_provider("skills/classify/SKILL.md"),
         before_agent_callback=make_stop_guard(CLASSIFICATION_RESULT),
         tools=[
             tools_ingest.check_existing_release_note,
@@ -76,11 +76,11 @@ def build_agents() -> list[Any]:
         ],
     )
 
-    change_analyser = _llm_agent(
-        name="ChangeAnalyserAgent",
+    analyze = _llm_agent(
+        name="AnalyzeAgent",
         model=model,
         output_key=CHANGE_ANALYSER_RESULT,
-        instruction=skill_instruction_provider("skills/change_analyser/SKILL.md"),
+        instruction=skill_instruction_provider("skills/analyze/SKILL.md"),
         before_agent_callback=make_stop_guard(CHANGE_ANALYSER_RESULT),
         tools=[
             tools_analysis.search_terraform_support,
@@ -92,11 +92,11 @@ def build_agents() -> list[Any]:
         ],
     )
 
-    decision_maker = _llm_agent(
-        name="DecisionMakerAgent",
+    decide = _llm_agent(
+        name="DecideAgent",
         model=model,
         output_key=DECISION_MAKER_RESULT,
-        instruction=skill_instruction_provider("skills/decision_maker/SKILL.md"),
+        instruction=skill_instruction_provider("skills/decide/SKILL.md"),
         before_agent_callback=chain_guards(
             make_stop_guard(DECISION_MAKER_RESULT),
             github_connectivity_guard,
@@ -108,11 +108,11 @@ def build_agents() -> list[Any]:
         ],
     )
 
-    terraform = _llm_agent(
-        name="TerraformAgent",
+    generate = _llm_agent(
+        name="GenerateAgent",
         model=model,
         output_key=TERRAFORM_RESULT,
-        instruction=skill_instruction_provider("skills/terraform/SKILL.md"),
+        instruction=skill_instruction_provider("skills/generate/SKILL.md"),
         before_agent_callback=make_stop_guard(TERRAFORM_RESULT),
         tools=[
             tools_terraform.list_artifact_files,
@@ -135,11 +135,11 @@ def build_agents() -> list[Any]:
         ],
     )
 
-    jira = _llm_agent(
-        name="JiraAgent",
+    ticket = _llm_agent(
+        name="TicketAgent",
         model=model,
         output_key=JIRA_RESULT,
-        instruction=skill_instruction_provider("skills/jira/SKILL.md"),
+        instruction=skill_instruction_provider("skills/ticket/SKILL.md"),
         before_agent_callback=chain_guards(
             make_stop_guard(JIRA_RESULT),
             jira_connectivity_guard,
@@ -152,11 +152,11 @@ def build_agents() -> list[Any]:
         ],
     )
 
-    pr = _llm_agent(
-        name="PRAgent",
+    publish = _llm_agent(
+        name="PublishAgent",
         model=model,
         output_key=PR_RESULT,
-        instruction=skill_instruction_provider("skills/pr/SKILL.md"),
+        instruction=skill_instruction_provider("skills/publish/SKILL.md"),
         before_agent_callback=chain_guards(
             make_stop_guard(PR_RESULT),
             github_connectivity_guard,
@@ -171,4 +171,4 @@ def build_agents() -> list[Any]:
         ],
     )
 
-    return [request_processor, classification, change_analyser, decision_maker, terraform, jira, pr]
+    return [ingest, classify, analyze, decide, generate, ticket, publish]

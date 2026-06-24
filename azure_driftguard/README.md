@@ -29,8 +29,8 @@ release-notes source, Terraform provider, and product allow-list.
 ## Pipeline
 
 ```
-RequestProcessor → Classification → ChangeAnalyser → DecisionMaker
-   → Terraform → Jira → PR
+Ingest → Classify → Analyze → Decide
+   → Generate → Ticket → Publish
 ```
 
 See `docs/ARCHITECTURE.md` for the full contract and `docs/architecture.svg`

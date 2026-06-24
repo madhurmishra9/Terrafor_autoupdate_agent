@@ -18,19 +18,19 @@ repository is the starting point.
 
 ## 1. Phased rollout
 
-### Phase 1 — Hybrid (TerraformAgent on skills, rest on prompts)
-The recommended first step. Migrate only `TerraformAgent` to a `SKILL.md` and
+### Phase 1 — Hybrid (GenerateAgent on skills, rest on prompts)
+The recommended first step. Migrate only `GenerateAgent` to a `SKILL.md` and
 leave the other six prompt-based. This proves the `load_skill` pattern, the
 skill-folder layout, and the deployment story with a small blast radius.
 Measure token usage and output quality over 5–10 runs.
 
-### Phase 2 — Extend to JiraAgent
-Migrate JiraAgent next. Its 3-tier connectivity rules and ADF requirements are
+### Phase 2 — Extend to TicketAgent
+Migrate TicketAgent next. Its 3-tier connectivity rules and ADF requirements are
 complex and benefit most from a versioned skill after Terraform.
 
 ### Phase 3 — Remaining agents
-ChangeAnalyser → DecisionMaker → RequestProcessor → PRAgent, in that order.
-RequestProcessor and PRAgent have the simplest rules, so they go last.
+Analyze → Decide → Ingest → PublishAgent, in that order.
+Ingest and PublishAgent have the simplest rules, so they go last.
 
 This repository ships **all seven** agents already on skills (the Phase-3 end
 state). To run a hybrid, replace a given agent's
@@ -132,16 +132,16 @@ MCP at `http://localhost:8080`.
 □ All Jira descriptions/comments are ADF (api/v3)
 □ acli path flattens ADF to text correctly
 □ GitHub works in both pat and app modes against api/v3
-□ TerraformAgent writes only artifacts (never repo); PRAgent does repo writes
-□ PRAgent reads classification/short_description from jira_result (no re-derive)
+□ GenerateAgent writes only artifacts (never repo); PublishAgent does repo writes
+□ PublishAgent reads classification/short_description from jira_result (no re-derive)
 □ New PR triggers add_jira_comment linkback; jira_linked_back = true
-□ fetch_only mode halts cleanly after ClassificationAgent
+□ fetch_only mode halts cleanly after ClassifyAgent
 □ terraform validate passes on patched files
 □ provider schema grounding active (extract_resource_schema used before generation)
 □ self-correcting validate→plan loop regenerates on failure, capped at max_retries
 □ version-pinning gate bumps required_providers when the pin blocks a feature
 □ judge pass rejects patches below JUDGE_MIN_SCORE
-□ tiered routing: RequestProcessor + Classification on the fast model
+□ tiered routing: Ingest + Classification on the fast model
 □ relevance filter fails open (never silently drops releases)
 □ schema/registry lookups are TTL-cached
 □ pytest green; ruff/mypy clean

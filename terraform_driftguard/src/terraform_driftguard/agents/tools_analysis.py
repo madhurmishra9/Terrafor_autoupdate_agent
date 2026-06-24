@@ -1,4 +1,4 @@
-"""Tools for ChangeAnalyserAgent and DecisionMakerAgent."""
+"""Tools for AnalyzeAgent and DecideAgent."""
 from __future__ import annotations
 
 from typing import Any
@@ -17,7 +17,7 @@ _REGISTRY_BASE = "https://registry.terraform.io/v1"
 def search_terraform_support(provider: str = "google", resource: str = "") -> dict[str, Any]:
     """Query the Terraform Registry for provider versions (TTL-cached).
 
-    Shares the registry cache with TerraformAgent so repeated lookups within and
+    Shares the registry cache with GenerateAgent so repeated lookups within and
     across runs hit the cache instead of re-fetching.
     """
     from ..common.cache import registry_cache
@@ -70,7 +70,7 @@ def fetch_webpage(url: str) -> dict[str, Any]:
 
 
 def get_module_file(file_path: str, ref: str = "") -> dict[str, Any]:
-    """Read a Terraform module file from the GitHub repo (DecisionMaker)."""
+    """Read a Terraform module file from the GitHub repo (Decide)."""
     client = GitHubClient()
     return client.get_file(file_path, ref=ref or None)
 
@@ -84,7 +84,7 @@ def list_module_path() -> dict[str, Any]:
 def list_product_resources(product: str) -> dict[str, Any]:
     """Return the full resource family for a product (primary + related).
 
-    A product is a family of Terraform resources, not one. ChangeAnalyser uses
+    A product is a family of Terraform resources, not one. Analyze uses
     this to know every resource a release note for this product could touch —
     so a feature on a secondary resource (e.g. an object, not the bucket) is not
     missed.
@@ -130,7 +130,7 @@ def resolve_attribute_owner(product: str, attribute: str, version: str = "") -> 
 def list_family_schema(product: str, version: str = "") -> dict[str, Any]:
     """Return the grounded attribute/block surface of a product's whole family.
 
-    Lets ChangeAnalyser scan every resource's real arguments for the pinned
+    Lets Analyze scan every resource's real arguments for the pinned
     provider version, rather than relying on the model's memory of the schema.
     """
     from ..common import schema_index
