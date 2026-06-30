@@ -1,4 +1,4 @@
-"""Tools for RequestProcessorAgent and ClassificationAgent (AWS target cloud).
+"""Tools for IngestAgent and ClassifyAgent (AWS target cloud).
 
 Source: AWS 'What's New' RSS feed (https://aws.amazon.com/about-aws/whats-new/recent/feed/).
 The pipeline runtime platform stays on GCP (Vertex + CloudSQL); only the cloud
@@ -32,7 +32,7 @@ def get_current_timestamp() -> str:
 def list_feeds() -> dict[str, Any]:
     """Return the feeds to fetch this run, and when the run was triggered.
 
-    Tells RequestProcessor WHICH feeds to pull: the shared cloud feed
+    Tells Ingest WHICH feeds to pull: the shared cloud feed
     (RELEASE_FEED_URL) plus any per-product feed_url declared in
     skills/products/*.yaml. The pipeline run is triggered on a schedule
     (EventBridge/ECS, EKS/AKS CronJob), so "when" is the trigger time returned

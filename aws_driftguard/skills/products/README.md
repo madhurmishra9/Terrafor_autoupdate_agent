@@ -45,11 +45,11 @@ relevance_topics:               # extra phrases that strengthen the embedding
 | Field | Stage that uses it | Effect |
 |-------|--------------------|--------|
 | `name` | all | canonical product identity |
-| `aliases` | RequestProcessor (match), relevance | matches release-note text to this product |
-| `resources` | ChangeAnalyser, Terraform | provider resources to check/patch |
-| `module_paths` | DecisionMaker | which module dirs to fetch + patch |
-| `policy_allowed` | ChangeAnalyser | `true` auto-patches; `false` flags for review |
-| `relevance_topics` | RequestProcessor | improves early relevance filtering |
+| `aliases` | Ingest (match), relevance | matches release-note text to this product |
+| `resources` | Analyze, Terraform | provider resources to check/patch |
+| `module_paths` | Decide | which module dirs to fetch + patch |
+| `policy_allowed` | Analyze | `true` auto-patches; `false` flags for review |
+| `relevance_topics` | Ingest | improves early relevance filtering |
 | `enabled` | all | `false` skips the product entirely |
 
 ## Notes

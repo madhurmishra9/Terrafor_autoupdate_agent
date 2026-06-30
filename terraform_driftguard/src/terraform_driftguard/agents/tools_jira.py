@@ -1,4 +1,4 @@
-"""Tools for JiraAgent: search, create, comment — ADF, 3-tier connectivity."""
+"""Tools for TicketAgent: search, create, comment — ADF, 3-tier connectivity."""
 from __future__ import annotations
 
 from typing import Any

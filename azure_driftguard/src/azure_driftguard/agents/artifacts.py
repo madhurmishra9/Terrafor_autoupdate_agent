@@ -1,7 +1,7 @@
 """Filesystem-backed artifact store shared by Terraform and PR agents.
 
-DecisionMaker saves fetched module files; Terraform loads them, generates
-patches, and saves the patched content; PRAgent loads the patched content to
+Decide saves fetched module files; Terraform loads them, generates
+patches, and saves the patched content; PublishAgent loads the patched content to
 push to GitHub. Artifacts live under a per-run directory.
 """
 from __future__ import annotations

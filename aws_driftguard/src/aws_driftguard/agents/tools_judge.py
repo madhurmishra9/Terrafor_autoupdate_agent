@@ -1,9 +1,9 @@
 """Judge/critic pass for generated Terraform patches.
 
-After TerraformAgent produces a patch that passes validate + plan, a separate
+After GenerateAgent produces a patch that passes validate + plan, a separate
 lightweight model scores its *semantic* correctness against the change analysis
 and the provider resource schema. Patches scoring below JUDGE_MIN_SCORE are
-rejected so they never reach PRAgent.
+rejected so they never reach PublishAgent.
 
 The judge model is configurable (defaults to the fast model) to keep the extra
 call cheap. The judge runs in-process via the Vertex GenAI SDK; if the SDK is

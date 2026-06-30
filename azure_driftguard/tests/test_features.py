@@ -114,12 +114,12 @@ def test_tool_registry_specs_and_dispatch():
 def test_stages_shape():
     from azure_driftguard.orchestration.stages import STAGES
 
-    assert [s.name for s in STAGES][0] == "RequestProcessorAgent"
-    assert [s.name for s in STAGES][-1] == "PRAgent"
+    assert [s.name for s in STAGES][0] == "IngestAgent"
+    assert [s.name for s in STAGES][-1] == "PublishAgent"
     assert len(STAGES) == 7
     by_name = {s.name: s for s in STAGES}
-    assert by_name["JiraAgent"].guard == "stop+jira"
-    assert by_name["PRAgent"].guard == "stop+github"
+    assert by_name["TicketAgent"].guard == "stop+jira"
+    assert by_name["PublishAgent"].guard == "stop+github"
 
 
 def test_product_registry_loads_and_gates():
@@ -146,8 +146,8 @@ def test_skills_source_local_default():
     from azure_driftguard.common import skills_source
 
     assert skills_source.describe_source().startswith("local://")
-    text = skills_source.read_text("skills/terraform/SKILL.md")
-    assert "TerraformAgent" in text
+    text = skills_source.read_text("skills/generate/SKILL.md")
+    assert "GenerateAgent" in text
     names = skills_source.list_dir("skills/products")
     assert any(n.endswith(".yaml") for n in names)
 
@@ -169,7 +169,7 @@ def test_skills_source_github_mode(monkeypatch):
 
     monkeypatch.setattr(skills_source, "_gh_request", fake)
     assert skills_source.describe_source() == "github://org/repo@main/skills"
-    assert skills_source.read_text("skills/terraform/SKILL.md") == "# gh skill"
+    assert skills_source.read_text("skills/generate/SKILL.md") == "# gh skill"
     assert skills_source.list_dir("skills/products") == ["x.yaml"]
     config.get_config.cache_clear()
 

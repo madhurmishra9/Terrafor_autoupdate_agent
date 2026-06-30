@@ -7,7 +7,7 @@ Works against github.com (https://api.github.com) and GitHub Enterprise Server
     app  -> GitHub App: sign a short-lived JWT with the app private key, exchange
             it for an installation access token, refresh on expiry
 
-Used by DecisionMakerAgent (read files) and PRAgent (branch, commit, PR, comment).
+Used by DecideAgent (read files) and PublishAgent (branch, commit, PR, comment).
 """
 from __future__ import annotations
 

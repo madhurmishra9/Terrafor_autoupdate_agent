@@ -232,7 +232,7 @@ class ProductRegistry:
         return None
 
     def feeds(self, shared_feed_url: str = "") -> list[dict[str, str]]:
-        """Return the feeds RequestProcessor should fetch this run.
+        """Return the feeds Ingest should fetch this run.
 
         Always includes the shared cloud feed (when provided), plus any feed the
         product owner declared — either a single feed_url or a feeds: list.

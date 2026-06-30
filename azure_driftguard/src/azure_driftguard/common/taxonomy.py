@@ -1,6 +1,6 @@
 """Single source of truth for the classification -> issue type -> PR prefix map.
 
-JiraAgent owns this mapping. PRAgent reads the resolved values from jira_result
+TicketAgent owns this mapping. PublishAgent reads the resolved values from jira_result
 and must not re-derive them, preventing title/issue-type drift.
 """
 from __future__ import annotations

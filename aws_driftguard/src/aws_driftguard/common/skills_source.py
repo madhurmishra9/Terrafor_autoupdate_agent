@@ -63,7 +63,7 @@ def _is_github() -> bool:
 def read_text(rel_path: str) -> str:
     """Return the text of a skill file given a path relative to the skills root.
 
-    Example rel_path: "skills/terraform/SKILL.md" or "terraform/SKILL.md".
+    Example rel_path: "skills/generate/SKILL.md" or "terraform/SKILL.md".
     """
     if _is_github():
         return _github_read(_norm(rel_path))

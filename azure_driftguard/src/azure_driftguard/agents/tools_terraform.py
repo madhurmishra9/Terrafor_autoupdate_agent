@@ -1,10 +1,10 @@
-"""Tools for TerraformAgent.
+"""Tools for GenerateAgent.
 
 Beyond load/save, this module implements the accuracy + optimisation features:
   - provider schema grounding (fetch the real schema before generating)
   - version-pinning gate (reject features the pinned provider can't support)
   - self-correcting validate -> plan loop (regenerate on failure, capped)
-  - judge/critic scoring (semantic correctness gate before PRAgent)
+  - judge/critic scoring (semantic correctness gate before PublishAgent)
 
 All schema and registry lookups are TTL-cached. Functions degrade gracefully
 when the terraform binary is unavailable (valid=None => "unknown", not failure).
@@ -30,7 +30,7 @@ _REGISTRY_BASE = "https://registry.terraform.io/v1"
 
 # ── Artifact passthrough ───────────────────────────────────────────────────
 def list_artifact_files() -> dict[str, Any]:
-    """List artifacts saved by DecisionMaker for patching."""
+    """List artifacts saved by Decide for patching."""
     return artifacts.list_artifacts()
 
 
@@ -40,7 +40,7 @@ def load_artifacts(name: str) -> dict[str, Any]:
 
 
 def save_artifacts_from_content(name: str, content: str) -> dict[str, Any]:
-    """Save patched HCL content back as an artifact for PRAgent to push."""
+    """Save patched HCL content back as an artifact for PublishAgent to push."""
     return artifacts.save_artifact(name, content, meta={"stage": "terraform"})
 
 

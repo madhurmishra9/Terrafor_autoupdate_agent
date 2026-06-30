@@ -9,7 +9,7 @@ can roll them out incrementally and measure impact.
 ### 1. Provider schema grounding
 **Where:** `agents/tools_terraform.py` — `get_provider_schema`,
 `extract_resource_schema`.
-Before generating any HCL, TerraformAgent fetches the *real* provider schema for
+Before generating any HCL, GenerateAgent fetches the *real* provider schema for
 the exact target version. When the `terraform` binary is present it runs
 `terraform providers schema -json` (authoritative); otherwise it falls back to
 the Registry version metadata. The resource's argument names and required flags
@@ -46,14 +46,14 @@ Disable with `JUDGE_ENABLED=false`.
 
 ### 5. Tiered model routing
 **Where:** `agents/definitions.py`, `common/config.py`.
-RequestProcessor and Classification (parsing + bucketing) run on the cheaper
+Ingest and Classification (parsing + bucketing) run on the cheaper
 `VERTEX_MODEL_FAST` (default `gemini-2.5-flash`). Reasoning-heavy agents
-(ChangeAnalyser, DecisionMaker, Terraform) stay on `VERTEX_MODEL`
+(Analyze, Decide, Terraform) stay on `VERTEX_MODEL`
 (`gemini-2.5-pro`). The judge uses `VERTEX_MODEL_JUDGE` (fast by default).
 
 ### 6. Embedding-based relevance filter
 **Where:** `agents/tools_relevance.py` — `score_release_relevance`.
-RequestProcessor scores each GA release against the managed module surface using
+Ingest scores each GA release against the managed module surface using
 text embeddings, dropping low-relevance notes before the expensive
 classification + analysis stages. **Fails open**: if embeddings are unavailable
 the note is kept, so releases are never silently dropped.
@@ -62,7 +62,7 @@ Disable with `RELEVANCE_FILTER_ENABLED=false`.
 ### 7. TTL cache for schema + registry lookups
 **Where:** `common/cache.py`.
 Provider schemas and Registry metadata change rarely, so they are cached for
-`CACHE_TTL_SECONDS` (default 1 day). Shared across ChangeAnalyser and Terraform.
+`CACHE_TTL_SECONDS` (default 1 day). Shared across Analyze and Terraform.
 For multi-replica deployments, swap the in-process `TTLCache` for a Redis- or
 CloudSQL-backed implementation behind the same `get`/`set` interface.
 

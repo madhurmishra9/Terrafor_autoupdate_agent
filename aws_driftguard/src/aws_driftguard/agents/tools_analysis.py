@@ -1,4 +1,4 @@
-"""Tools for ChangeAnalyserAgent and DecisionMakerAgent."""
+"""Tools for AnalyzeAgent and DecideAgent."""
 from __future__ import annotations
 
 from typing import Any
@@ -17,7 +17,7 @@ _REGISTRY_BASE = "https://registry.terraform.io/v1"
 def search_terraform_support(provider: str = "aws", resource: str = "") -> dict[str, Any]:
     """Query the Terraform Registry for provider versions (TTL-cached).
 
-    Shares the registry cache with TerraformAgent so repeated lookups within and
+    Shares the registry cache with GenerateAgent so repeated lookups within and
     across runs hit the cache instead of re-fetching.
     """
     from ..common.cache import registry_cache
@@ -69,7 +69,7 @@ def fetch_webpage(url: str) -> dict[str, Any]:
 
 
 def get_module_file(file_path: str, ref: str = "") -> dict[str, Any]:
-    """Read a Terraform module file from the GitHub repo (DecisionMaker)."""
+    """Read a Terraform module file from the GitHub repo (Decide)."""
     client = GitHubClient()
     return client.get_file(file_path, ref=ref or None)
 
