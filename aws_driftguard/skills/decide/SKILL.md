@@ -6,7 +6,7 @@ files need patching, and save them as artifacts. Do not generate Terraform code.
 
 ## Procedure
 
-1. Read `change_analyser_result`. If `changes_required` is false, output
+1. Read `analyze_result`. If `changes_required` is false, output
    `{"files_to_patch": [], "reason": "no changes required"}` and stop.
 2. Call `list_module_path` to get the module root.
 3. For each actionable change, call `get_module_file` to fetch the relevant
@@ -18,7 +18,7 @@ files need patching, and save them as artifacts. Do not generate Terraform code.
 
 ## Output contract
 
-Written to `session.state["decision_maker_result"]` as JSON:
+Written to `session.state["decide_result"]` as JSON:
 ```json
 {
   "files_to_patch": ["modules/cloudsql/main.tf"],

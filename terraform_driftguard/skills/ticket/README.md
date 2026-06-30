@@ -23,8 +23,8 @@ concerns that must not leak into the Terraform or PR agents.
 - Position: Step 6 of 7, after GenerateAgent, before PublishAgent.
 - Trigger: runs only if `pipeline_halted` is false.
 - Skip: skipped (output stamped `[STOP]`) when the pipeline is halted upstream.
-- Upstream contract: requires `release_notes` and `change_analyser_result`.
-- Downstream contract: writes `jira_result`.
+- Upstream contract: requires `release_notes` and `analyze_result`.
+- Downstream contract: writes `ticket_result`.
 
 ## Where it lives in code
 
@@ -44,10 +44,10 @@ Agent wiring (`definitions.py`):
 ```python
 jira = _llm_agent(
     name="TicketAgent",
-    output_key=JIRA_RESULT,
+    output_key=TICKET_RESULT,
     instruction=skill_instruction_provider("skills/ticket/SKILL.md"),
     before_agent_callback=chain_guards(
-        make_stop_guard(JIRA_RESULT), jira_connectivity_guard),
+        make_stop_guard(TICKET_RESULT), jira_connectivity_guard),
     tools=[search_existing_jira, create_jira_ticket, add_jira_comment,
            get_current_timestamp],
 )
@@ -58,8 +58,8 @@ Tier order (`jira_client.py`): each operation tries `_library()`, then
 
 ## Inputs and outputs
 
-- Reads from session.state: `release_notes`, `change_analyser_result`.
-- Writes to session.state: `jira_result` (ticket_number, ticket_url, action,
+- Reads from session.state: `release_notes`, `analyze_result`.
+- Writes to session.state: `ticket_result` (ticket_number, ticket_url, action,
   classification, short_description, connectivity_tier).
 - External dependencies: Jira Cloud via three mechanisms — `jira` Python
   library (tier 1), `acli` (tier 2), REST API v3 (tier 3). All rich text is ADF.

@@ -15,23 +15,23 @@ logger = get_logger(__name__)
 
 # ── Canonical session-state keys ───────────────────────────────────────────
 RELEASE_NOTES = "release_notes"
-CLASSIFICATION_RESULT = "classification_result"
-CHANGE_ANALYSER_RESULT = "change_analyser_result"
-DECISION_MAKER_RESULT = "decision_maker_result"
-TERRAFORM_RESULT = "terraform_result"
-JIRA_RESULT = "jira_result"
-PR_RESULT = "pr_result"
+CLASSIFY_RESULT = "classify_result"
+ANALYZE_RESULT = "analyze_result"
+DECIDE_RESULT = "decide_result"
+GENERATE_RESULT = "generate_result"
+TICKET_RESULT = "ticket_result"
+PUBLISH_RESULT = "publish_result"
 PIPELINE_MODE = "pipeline_mode"
 PIPELINE_HALTED = "pipeline_halted"
 
 ALL_KEYS = [
     RELEASE_NOTES,
-    CLASSIFICATION_RESULT,
-    CHANGE_ANALYSER_RESULT,
-    DECISION_MAKER_RESULT,
-    TERRAFORM_RESULT,
-    JIRA_RESULT,
-    PR_RESULT,
+    CLASSIFY_RESULT,
+    ANALYZE_RESULT,
+    DECIDE_RESULT,
+    GENERATE_RESULT,
+    TICKET_RESULT,
+    PUBLISH_RESULT,
     PIPELINE_MODE,
     PIPELINE_HALTED,
 ]

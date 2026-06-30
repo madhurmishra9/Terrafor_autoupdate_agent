@@ -10,7 +10,7 @@ fail and halt independently.
 
 ## What it does
 
-- Reads the Jira ticket reference and classification from `jira_result`.
+- Reads the Jira ticket reference and classification from `ticket_result`.
 - Computes the PR title using the TicketAgent-owned prefix mapping (never
   re-derived here).
 - Comments on an existing PR, or creates a branch, pushes patched files, and
@@ -22,8 +22,8 @@ fail and halt independently.
 - Position: Step 7 of 7, after TicketAgent. Terminal stage.
 - Trigger: runs only if `pipeline_halted` is false.
 - Skip: skipped when halted upstream (output stamped `[STOP]`).
-- Upstream contract: requires `jira_result` and `terraform_result`.
-- Downstream contract: writes `pr_result`.
+- Upstream contract: requires `ticket_result` and `generate_result`.
+- Downstream contract: writes `publish_result`.
 
 ## Where it lives in code
 
@@ -49,8 +49,8 @@ Linkback closes the loop (`tools_pr.py` → `link_pr_to_jira` → `add_jira_comm
 
 ## Inputs and outputs
 
-- Reads from session.state: `jira_result`, `terraform_result`.
-- Writes to session.state: `pr_result` (pr_url, pr_number, action,
+- Reads from session.state: `ticket_result`, `generate_result`.
+- Writes to session.state: `publish_result` (pr_url, pr_number, action,
   jira_ticket, jira_linked_back).
 - External dependencies: GitHub (api/v3 or api.github.com) via PAT or GitHub
   App; Jira (for the linkback comment, reusing the recorded tier).
@@ -58,7 +58,7 @@ Linkback closes the loop (`tools_pr.py` → `link_pr_to_jira` → `add_jira_comm
 ## Failure modes and halts
 
 - GitHub unreachable → `github_connectivity_guard` halts with `github_unreachable`.
-- `jira_result` missing or `[STOP]` → agent must not raise a PR.
+- `ticket_result` missing or `[STOP]` → agent must not raise a PR.
 - PR created but linkback failed → `jira_linked_back: false`, treated as failure.
 
 ## Tests

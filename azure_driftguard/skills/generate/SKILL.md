@@ -7,11 +7,11 @@ raise PRs. Do not create or comment on Jira tickets.
 
 ## Procedure (grounded, self-correcting, judged)
 
-For each file in `decision_maker_result.files_to_patch`:
+For each file in `decide_result.files_to_patch`:
 
 ### 1. Ground in the real provider schema (do this BEFORE generating)
 - Identify the target resource(s) and the provider version from
-  `change_analyser_result`.
+  `analyze_result`.
 - Call `extract_resource_schema(provider, resource, version)` to get the exact
   argument names, required flags, and nested block types for that resource at
   that version. Use ONLY arguments present in this schema. Never invent
@@ -45,7 +45,7 @@ For each file in `decision_maker_result.files_to_patch`:
 
 ### 5. Judge — semantic correctness gate
 - Call `judge_patch(requirement, patch, resource_schema_json, provider_version)`
-  where `requirement` is the change description from `change_analyser_result`.
+  where `requirement` is the change description from `analyze_result`.
   - If `passed=true` (or `skipped=true`): save the patch.
   - If `passed=false`: read `issues`, regenerate once more addressing them, then
     re-verify and re-judge. If it still fails, do NOT save; record the issues.
@@ -77,7 +77,7 @@ For each file in `decision_maker_result.files_to_patch`:
 
 ## Semantic rules
 - Update `required_providers` only when the version-pin gate requires it, or when
-  `decision_maker_result.provider_version_change` says so.
+  `decide_result.provider_version_change` says so.
 - Edit ONLY the files in `files_to_patch`.
 - Never touch `versions.tf` unless the version-pin gate or Decide directs
   it — silent provider-version drift is the highest-impact failure.
@@ -87,7 +87,7 @@ For each file in `decision_maker_result.files_to_patch`:
 
 ## Output contract
 
-Written to `session.state["terraform_result"]` as JSON:
+Written to `session.state["generate_result"]` as JSON:
 ```json
 {
   "patched": true,

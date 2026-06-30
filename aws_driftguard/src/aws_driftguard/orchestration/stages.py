@@ -33,7 +33,7 @@ STAGES: list[StageSpec] = [
     StageSpec(
         name="ClassifyAgent",
         skill="skills/classify/SKILL.md",
-        output_key="classification_result",
+        output_key="classify_result",
         model_tier="fast",
         tools=["check_existing_release_note", "save_classification_to_database",
                "get_current_timestamp"],
@@ -41,20 +41,20 @@ STAGES: list[StageSpec] = [
     StageSpec(
         name="AnalyzeAgent",
         skill="skills/analyze/SKILL.md",
-        output_key="change_analyser_result",
+        output_key="analyze_result",
         tools=["search_terraform_support", "check_org_policy_support", "list_product_resources", "resolve_attribute_owner", "list_family_schema", "fetch_webpage"],
     ),
     StageSpec(
         name="DecideAgent",
         skill="skills/decide/SKILL.md",
-        output_key="decision_maker_result",
+        output_key="decide_result",
         guard="stop+github",
         tools=["get_module_file", "list_module_path", "fetch_webpage"],
     ),
     StageSpec(
         name="GenerateAgent",
         skill="skills/generate/SKILL.md",
-        output_key="terraform_result",
+        output_key="generate_result",
         tools=["list_artifact_files", "load_artifacts", "save_artifacts_from_content",
                "check_patch_scope", "strip_patch_scope",
                "get_provider_schema", "extract_resource_schema", "check_version_pin",
@@ -64,7 +64,7 @@ STAGES: list[StageSpec] = [
     StageSpec(
         name="TicketAgent",
         skill="skills/ticket/SKILL.md",
-        output_key="jira_result",
+        output_key="ticket_result",
         guard="stop+jira",
         tools=["search_existing_jira", "create_jira_ticket", "add_jira_comment",
                "get_current_timestamp"],
@@ -72,7 +72,7 @@ STAGES: list[StageSpec] = [
     StageSpec(
         name="PublishAgent",
         skill="skills/publish/SKILL.md",
-        output_key="pr_result",
+        output_key="publish_result",
         guard="stop+github",
         tools=["compute_pr_title", "find_existing_pr", "open_pull_request",
                "comment_on_existing_pr", "link_pr_to_jira", "get_current_timestamp"],

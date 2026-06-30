@@ -11,13 +11,13 @@ from typing import Any
 from ..common.config import get_config
 from ..common.logging_setup import get_logger
 from ..common.state import (
-    CHANGE_ANALYSER_RESULT,
-    CLASSIFICATION_RESULT,
-    DECISION_MAKER_RESULT,
-    JIRA_RESULT,
-    PR_RESULT,
+    ANALYZE_RESULT,
+    CLASSIFY_RESULT,
+    DECIDE_RESULT,
+    TICKET_RESULT,
+    PUBLISH_RESULT,
     RELEASE_NOTES,
-    TERRAFORM_RESULT,
+    GENERATE_RESULT,
     chain_guards,
     make_stop_guard,
 )
@@ -66,9 +66,9 @@ def build_agents() -> list[Any]:
     classify = _llm_agent(
         name="ClassifyAgent",
         model=model_fast,
-        output_key=CLASSIFICATION_RESULT,
+        output_key=CLASSIFY_RESULT,
         instruction=skill_instruction_provider("skills/classify/SKILL.md"),
-        before_agent_callback=make_stop_guard(CLASSIFICATION_RESULT),
+        before_agent_callback=make_stop_guard(CLASSIFY_RESULT),
         tools=[
             tools_ingest.check_existing_release_note,
             tools_ingest.save_classification_to_database,
@@ -79,9 +79,9 @@ def build_agents() -> list[Any]:
     analyze = _llm_agent(
         name="AnalyzeAgent",
         model=model,
-        output_key=CHANGE_ANALYSER_RESULT,
+        output_key=ANALYZE_RESULT,
         instruction=skill_instruction_provider("skills/analyze/SKILL.md"),
-        before_agent_callback=make_stop_guard(CHANGE_ANALYSER_RESULT),
+        before_agent_callback=make_stop_guard(ANALYZE_RESULT),
         tools=[
             tools_analysis.search_terraform_support,
             tools_analysis.check_org_policy_support,
@@ -95,10 +95,10 @@ def build_agents() -> list[Any]:
     decide = _llm_agent(
         name="DecideAgent",
         model=model,
-        output_key=DECISION_MAKER_RESULT,
+        output_key=DECIDE_RESULT,
         instruction=skill_instruction_provider("skills/decide/SKILL.md"),
         before_agent_callback=chain_guards(
-            make_stop_guard(DECISION_MAKER_RESULT),
+            make_stop_guard(DECIDE_RESULT),
             github_connectivity_guard,
         ),
         tools=[
@@ -111,9 +111,9 @@ def build_agents() -> list[Any]:
     generate = _llm_agent(
         name="GenerateAgent",
         model=model,
-        output_key=TERRAFORM_RESULT,
+        output_key=GENERATE_RESULT,
         instruction=skill_instruction_provider("skills/generate/SKILL.md"),
-        before_agent_callback=make_stop_guard(TERRAFORM_RESULT),
+        before_agent_callback=make_stop_guard(GENERATE_RESULT),
         tools=[
             tools_terraform.list_artifact_files,
             tools_terraform.load_artifacts,
@@ -138,10 +138,10 @@ def build_agents() -> list[Any]:
     ticket = _llm_agent(
         name="TicketAgent",
         model=model,
-        output_key=JIRA_RESULT,
+        output_key=TICKET_RESULT,
         instruction=skill_instruction_provider("skills/ticket/SKILL.md"),
         before_agent_callback=chain_guards(
-            make_stop_guard(JIRA_RESULT),
+            make_stop_guard(TICKET_RESULT),
             jira_connectivity_guard,
         ),
         tools=[
@@ -155,10 +155,10 @@ def build_agents() -> list[Any]:
     publish = _llm_agent(
         name="PublishAgent",
         model=model,
-        output_key=PR_RESULT,
+        output_key=PUBLISH_RESULT,
         instruction=skill_instruction_provider("skills/publish/SKILL.md"),
         before_agent_callback=chain_guards(
-            make_stop_guard(PR_RESULT),
+            make_stop_guard(PUBLISH_RESULT),
             github_connectivity_guard,
         ),
         tools=[

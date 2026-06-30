@@ -65,8 +65,8 @@ def test_stop_guard_stamps_output_key():
     state.halt_pipeline(st, "x")
     assert state.is_halted(st)
     if state.is_halted(st):
-        st["jira_result"] = state.STOP_SENTINEL
-    assert st["jira_result"] == state.STOP_SENTINEL
+        st["ticket_result"] = state.STOP_SENTINEL
+    assert st["ticket_result"] == state.STOP_SENTINEL
 
 
 def test_adf_flatten_in_jira_client():
