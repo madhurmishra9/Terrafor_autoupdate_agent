@@ -29,7 +29,7 @@ def main() -> None:
 
         state = run_pipeline(prompt)
 
-    logger.info("Run complete. PR result: %s", state.get("pr_result"))
+    logger.info("Run complete. PR result: %s", state.get("publish_result"))
 
 
 if __name__ == "__main__":

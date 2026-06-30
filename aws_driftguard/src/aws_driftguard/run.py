@@ -29,7 +29,7 @@ def main() -> None:
         from .orchestration.bedrock_orchestrator import run_pipeline
 
         state = run_pipeline(prompt)
-        logger.info("Converse run complete. PR result: %s", state.get("pr_result"))
+        logger.info("Converse run complete. PR result: %s", state.get("publish_result"))
 
 
 if __name__ == "__main__":

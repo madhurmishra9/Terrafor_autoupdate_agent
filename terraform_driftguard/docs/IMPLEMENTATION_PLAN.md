@@ -133,7 +133,7 @@ MCP at `http://localhost:8080`.
 □ acli path flattens ADF to text correctly
 □ GitHub works in both pat and app modes against api/v3
 □ GenerateAgent writes only artifacts (never repo); PublishAgent does repo writes
-□ PublishAgent reads classification/short_description from jira_result (no re-derive)
+□ PublishAgent reads classification/short_description from ticket_result (no re-derive)
 □ New PR triggers add_jira_comment linkback; jira_linked_back = true
 □ fetch_only mode halts cleanly after ClassifyAgent
 □ terraform validate passes on patched files

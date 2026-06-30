@@ -7,8 +7,8 @@ not create Jira tickets — that is TicketAgent's job.
 
 ## Inputs
 
-Read from `jira_result`: `ticket_number`, `classification`, `short_description`,
-`ticket_url`. If `jira_result` is missing or contains the `[STOP]` sentinel,
+Read from `ticket_result`: `ticket_number`, `classification`, `short_description`,
+`ticket_url`. If `ticket_result` is missing or contains the `[STOP]` sentinel,
 halt — never raise a PR without a Jira reference.
 
 ## PR title — owned by TicketAgent's mapping
@@ -34,7 +34,7 @@ Title format: `{prefix} {ticket_number} {short_description}`, e.g.
 3. **If no PR exists:**
    - Call `open_pull_request` with ticket_number, classification,
      short_description, jira_url, analysis summary, and the list of patched files
-     from `terraform_result.files_modified`.
+     from `generate_result.files_modified`.
    - The tool creates the branch, pushes files, and opens the PR.
    - Call `get_current_timestamp`, then `link_pr_to_jira` with the new PR URL —
      this closes the workflow loop. A missing linkback is a failure even if the
@@ -49,7 +49,7 @@ choose the mode.
 
 ## Output contract
 
-Written to `session.state["pr_result"]` as JSON:
+Written to `session.state["publish_result"]` as JSON:
 ```json
 {
   "pr_url": "https://github.com/org/repo/pull/123",

@@ -8,7 +8,7 @@ module contents — that is Decide's job.
 
 ## Procedure
 
-1. For each item in `classification_result`:
+1. For each item in `classify_result`:
    a. Call `list_product_resources(product)` to get the product's full resource
       **family** (primary + related). A product is a family of resources, not
       one — a feature may live on a secondary resource.
@@ -54,7 +54,7 @@ module contents — that is Decide's job.
 
 ## Output contract
 
-Written to `session.state["change_analyser_result"]`. Always set
+Written to `session.state["analyze_result"]`. Always set
 `changes_required` explicitly. Valid JSON, no commentary, no fences.
 
 ## Managed products (declarative)

@@ -27,7 +27,7 @@ assemble valid ADF documents. Do not hand-write ADF or wiki markup.
 
 ## Procedure
 
-1. From `release_notes` and `change_analyser_result`, determine the release
+1. From `release_notes` and `analyze_result`, determine the release
    identity (`product`, `version`, `release_date`) and the change
    classification (`feat` | `fix` | `chore`).
 2. Call `search_existing_jira` with the release identity.
@@ -44,7 +44,7 @@ assemble valid ADF documents. Do not hand-write ADF or wiki markup.
 
 ## Output contract
 
-Written to `session.state["jira_result"]` as JSON:
+Written to `session.state["ticket_result"]` as JSON:
 ```json
 {
   "ticket_number": "PROJ-1234",

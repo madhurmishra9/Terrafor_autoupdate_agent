@@ -60,7 +60,7 @@ def test_state_halt_and_clear():
 
 
 def test_stop_guard_stamps_output_key():
-    guard = state.make_stop_guard("jira_result")
+    guard = state.make_stop_guard("ticket_result")
 
     class Ctx:
         def __init__(self):
@@ -68,11 +68,11 @@ def test_stop_guard_stamps_output_key():
     ctx = Ctx()
     # not halted -> returns None, no stamp
     assert guard(ctx) is None
-    assert "jira_result" not in ctx.state
+    assert "ticket_result" not in ctx.state
     # halted -> stamps STOP
     state.halt_pipeline(ctx.state, "x")
     guard(ctx)
-    assert ctx.state["jira_result"] == state.STOP_SENTINEL
+    assert ctx.state["ticket_result"] == state.STOP_SENTINEL
 
 
 def test_adf_flatten_in_jira_client():

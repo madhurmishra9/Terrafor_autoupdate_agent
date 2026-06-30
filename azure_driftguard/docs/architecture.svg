@@ -23,7 +23,7 @@
 <text x="62" y="157" font-size="16" font-weight="700" fill="#1A73E8">Azure DriftGuard pipeline (7 stages) — Azure OpenAI / managed AI Agent Service</text>
 <rect x="62" y="175" width="1556" height="34" rx="6" fill="#FEF7E0" stroke="#F9AB00" stroke-width="1.5"/>
 <text x="78" y="197" font-size="13" font-weight="600" fill="#202124">cb_before_pipeline</text>
-<text x="240" y="197" font-size="12" fill="#5F6368">→ clears 9 state keys (release_notes · classification_result · change_analyser_result · decision_maker_result · terraform_result · jira_result · pr_result · pipeline_mode · pipeline_halted)</text>
+<text x="240" y="197" font-size="12" fill="#5F6368">→ clears 9 state keys (release_notes · classify_result · analyze_result · decide_result · generate_result · ticket_result · publish_result · pipeline_mode · pipeline_halted)</text>
 <rect x="62" y="228" width="1556" height="5" rx="2.5" fill="#FCE8E6" stroke="#EA4335" stroke-width="0.5"/>
 <text x="62" y="225" font-size="11" font-weight="600" fill="#EA4335">pipeline_halted flag (centralised stop-guard channel)</text>
 <rect x="60" y="240" width="200" height="110" rx="10" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5" filter="url(#shadow)"/>
@@ -41,7 +41,7 @@
 <text x="318" y="268" font-size="15" font-weight="700" fill="#202124">Classify</text>
 <line x1="288" y1="290" x2="460" y2="290" stroke="#1A73E8" stroke-opacity="0.3"/>
 <text x="288" y="308" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">OUTPUT_KEY</text>
-<text x="288" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">classification_result</text>
+<text x="288" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">classify_result</text>
 <text x="288" y="342" font-size="10" font-weight="600" fill="#00897B" letter-spacing="0.4">↓ LOADS SKILL</text>
 <line x1="475" y1="295.0" x2="487" y2="295.0" stroke="#1A73E8" stroke-width="2" marker-end="url(#arrow-blue)"/>
 <rect x="488" y="240" width="200" height="110" rx="10" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5" filter="url(#shadow)"/>
@@ -50,7 +50,7 @@
 <text x="532" y="268" font-size="15" font-weight="700" fill="#202124">Analyze</text>
 <line x1="502" y1="290" x2="674" y2="290" stroke="#1A73E8" stroke-opacity="0.3"/>
 <text x="502" y="308" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">OUTPUT_KEY</text>
-<text x="502" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">change_analyser_result</text>
+<text x="502" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">analyze_result</text>
 <text x="502" y="342" font-size="10" font-weight="600" fill="#00897B" letter-spacing="0.4">↓ LOADS SKILL</text>
 <line x1="689" y1="295.0" x2="701" y2="295.0" stroke="#1A73E8" stroke-width="2" marker-end="url(#arrow-blue)"/>
 <rect x="702" y="240" width="200" height="110" rx="10" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5" filter="url(#shadow)"/>
@@ -59,7 +59,7 @@
 <text x="746" y="268" font-size="15" font-weight="700" fill="#202124">Decide</text>
 <line x1="716" y1="290" x2="888" y2="290" stroke="#1A73E8" stroke-opacity="0.3"/>
 <text x="716" y="308" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">OUTPUT_KEY</text>
-<text x="716" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">decision_maker_result</text>
+<text x="716" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">decide_result</text>
 <text x="716" y="342" font-size="10" font-weight="600" fill="#00897B" letter-spacing="0.4">↓ LOADS SKILL</text>
 <line x1="903" y1="295.0" x2="915" y2="295.0" stroke="#1A73E8" stroke-width="2" marker-end="url(#arrow-blue)"/>
 <rect x="916" y="240" width="200" height="110" rx="10" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5" filter="url(#shadow)"/>
@@ -68,7 +68,7 @@
 <text x="960" y="268" font-size="15" font-weight="700" fill="#202124">Generate</text>
 <line x1="930" y1="290" x2="1102" y2="290" stroke="#1A73E8" stroke-opacity="0.3"/>
 <text x="930" y="308" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">OUTPUT_KEY</text>
-<text x="930" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">terraform_result</text>
+<text x="930" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">generate_result</text>
 <text x="930" y="342" font-size="10" font-weight="600" fill="#00897B" letter-spacing="0.4">↓ LOADS SKILL</text>
 <line x1="1117" y1="295.0" x2="1129" y2="295.0" stroke="#1A73E8" stroke-width="2" marker-end="url(#arrow-blue)"/>
 <rect x="1130" y="240" width="200" height="110" rx="10" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5" filter="url(#shadow)"/>
@@ -77,7 +77,7 @@
 <text x="1174" y="268" font-size="15" font-weight="700" fill="#202124">Ticket</text>
 <line x1="1144" y1="290" x2="1316" y2="290" stroke="#1A73E8" stroke-opacity="0.3"/>
 <text x="1144" y="308" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">OUTPUT_KEY</text>
-<text x="1144" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">jira_result</text>
+<text x="1144" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">ticket_result</text>
 <text x="1144" y="342" font-size="10" font-weight="600" fill="#00897B" letter-spacing="0.4">↓ LOADS SKILL</text>
 <line x1="1331" y1="295.0" x2="1343" y2="295.0" stroke="#1A73E8" stroke-width="2" marker-end="url(#arrow-blue)"/>
 <rect x="1344" y="240" width="200" height="110" rx="10" fill="#E8F0FE" stroke="#1A73E8" stroke-width="1.5" filter="url(#shadow)"/>
@@ -86,7 +86,7 @@
 <text x="1388" y="268" font-size="15" font-weight="700" fill="#202124">Publish</text>
 <line x1="1358" y1="290" x2="1530" y2="290" stroke="#1A73E8" stroke-opacity="0.3"/>
 <text x="1358" y="308" font-size="10" font-weight="600" fill="#5F6368" letter-spacing="0.4">OUTPUT_KEY</text>
-<text x="1358" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">pr_result</text>
+<text x="1358" y="323" font-size="11" font-family="ui-monospace, SF Mono, Consolas, monospace" fill="#202124">publish_result</text>
 <text x="1358" y="342" font-size="10" font-weight="600" fill="#00897B" letter-spacing="0.4">↓ LOADS SKILL</text>
 <rect x="62" y="390" width="1556" height="34" rx="6" fill="#FEF7E0" stroke="#F9AB00" stroke-width="1.5"/>
 <text x="78" y="412" font-size="13" font-weight="600" fill="#202124">cb_after_pipeline</text>

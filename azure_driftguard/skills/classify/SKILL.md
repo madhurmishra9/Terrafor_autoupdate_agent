@@ -30,5 +30,5 @@ halts after you — downstream agents must not run.
 
 ## Output contract
 
-Written to `session.state["classification_result"]`. Valid JSON array, or the
+Written to `session.state["classify_result"]`. Valid JSON array, or the
 `[FETCH_ONLY_COMPLETE]` marker plus summary. No commentary, no fences.

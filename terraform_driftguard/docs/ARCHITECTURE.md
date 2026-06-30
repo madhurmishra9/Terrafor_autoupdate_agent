@@ -12,12 +12,12 @@ TerraformDriftGuardPipelineAgent (SequentialAgent)
 ├── after_agent_callback:  cb_after_pipeline    (eval artifact if CAPTURE_ENABLED)
 └── sub_agents:
       1 IngestAgent  → release_notes
-      2 ClassifyAgent    → classification_result
-      3 AnalyzeAgent    → change_analyser_result
-      4 DecideAgent     → decision_maker_result
-      5 GenerateAgent         → terraform_result
-      6 TicketAgent              → jira_result
-      7 PublishAgent                → pr_result
+      2 ClassifyAgent    → classify_result
+      3 AnalyzeAgent    → analyze_result
+      4 DecideAgent     → decide_result
+      5 GenerateAgent         → generate_result
+      6 TicketAgent              → ticket_result
+      7 PublishAgent                → publish_result
 ```
 
 ## Session-state contract
@@ -25,12 +25,12 @@ TerraformDriftGuardPipelineAgent (SequentialAgent)
 | Key | Written by | Cleared by |
 |-----|-----------|-----------|
 | `release_notes` | IngestAgent | cb_before_pipeline |
-| `classification_result` | ClassifyAgent | cb_before_pipeline |
-| `change_analyser_result` | AnalyzeAgent | cb_before_pipeline |
-| `decision_maker_result` | DecideAgent | cb_before_pipeline |
-| `terraform_result` | GenerateAgent | cb_before_pipeline |
-| `jira_result` | TicketAgent | cb_before_pipeline |
-| `pr_result` | PublishAgent | cb_before_pipeline |
+| `classify_result` | ClassifyAgent | cb_before_pipeline |
+| `analyze_result` | AnalyzeAgent | cb_before_pipeline |
+| `decide_result` | DecideAgent | cb_before_pipeline |
+| `generate_result` | GenerateAgent | cb_before_pipeline |
+| `ticket_result` | TicketAgent | cb_before_pipeline |
+| `publish_result` | PublishAgent | cb_before_pipeline |
 | `pipeline_mode` | IngestAgent (fetch-only) | cb_before_pipeline |
 | `pipeline_halted` | any agent via `halt_pipeline()` | cb_before_pipeline |
 
@@ -60,7 +60,7 @@ failure, so no agent runs without the resource it needs.
 3. REST API v3 (`requests`)
 
 `JiraUnreachable` is raised only if all three fail. The succeeding tier is
-returned on every result and recorded in `jira_result.connectivity_tier`, so
+returned on every result and recorded in `ticket_result.connectivity_tier`, so
 PublishAgent's linkback comment reuses the same mechanism. All rich text is ADF
 (`common/adf.py`) because the target is Jira Cloud `api/v3`.
 
